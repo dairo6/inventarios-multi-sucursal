@@ -1,0 +1,29 @@
+<!-- app.component.html -->
+
+<main class="flex flex-col min-h-screen">
+
+  <!-- Header -->
+  <header class="w-full shadow-md">
+    <app-header></app-header>
+  </header>
+
+  <!-- Contenedor principal -->
+  <div class="flex flex-1">
+    
+    <!-- Aside -->
+    <aside class="w-64 bg-black-100 border-r hidden md:block">
+      <app-aside></app-aside>
+    </aside>
+
+    <!-- Sección de contenido -->
+    <section class="flex-1 p-6 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full shadow-inner">
+    <app-footer></app-footer>
+  </footer>
+
+</main>
