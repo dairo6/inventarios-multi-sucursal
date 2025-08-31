@@ -7,48 +7,37 @@ import { CommonModule } from '@angular/common';
 import { Ripple } from 'primeng/ripple'
 import { Menubar } from 'primeng/menubar';
 import { ImageModule } from 'primeng/image';
+import { Menu } from 'primeng/menu';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [Menubar, BadgeModule, AvatarModule, InputTextModule, Ripple, CommonModule, ImageModule],
-  templateUrl: './header.html',
-  styleUrl: './header.css'
+    selector: 'app-header',
+    standalone: true,
+    imports: [Menubar, BadgeModule, AvatarModule, InputTextModule, Menu, CommonModule, ImageModule],
+    templateUrl: './header.html',
+    styleUrl: './header.css'
 })
 export class Header implements OnInit {
     items: MenuItem[] | undefined;
+    userMenuItems: MenuItem[] = [];
 
     ngOnInit() {
-        this.items = [
-            {
-                label: 'Home',
-                icon: 'pi pi-home',
-            },
-            {
-                label: 'Projects',
-                icon: 'pi pi-search',
-                badge: '3',
-                items: [
-                    {
-                        label: 'Core',
-                        icon: 'pi pi-bolt',
-                        shortcut: '⌘+S',
-                    },
-                    {
-                        label: 'Blocks',
-                        icon: 'pi pi-server',
-                        shortcut: '⌘+B',
-                    },
-                    {
-                        separator: true,
-                    },
-                    {
-                        label: 'UI Kit',
-                        icon: 'pi pi-pencil',
-                        shortcut: '⌘+U',
-                    },
-                ],
-            },
+        this.userMenuItems = [
+            { label: 'Configuración', icon: 'pi pi-cog', command: () => this.config() },
+            { label: 'Perfil', icon: 'pi pi-user', command: () => this.profile() },
+            { separator: true },
+            { label: 'Cerrar sesión', icon: 'pi pi-sign-out', command: () => this.logout() }
         ];
     }
+    config() {
+        console.log('Abrir configuración');
+    }
+
+    profile() {
+        console.log('Abrir perfil');
+    }
+
+    logout() {
+        console.log('Cerrar sesión');
+    }
+
 }
