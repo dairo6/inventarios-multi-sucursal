@@ -1,18 +1,32 @@
-<header class="header">
-  <!-- Logo + Nombre -->
-  <div class="header-left">
-    <i class="pi pi-box logo"></i>
-    <h1 class="title">Inventario Multi sucursal</h1>
-  </div>
+<div class="card">
+  <p-menubar [model]="items">
+    <ng-template #start>
+      <div class="flex items-center gap-4">
+        <!-- Logo -->
+        <p-image src="Logo-Inventario.png" alt="Image" width="150" />
+        <!-- Botón toggle aside -->
+        <p-button 
+          icon="pi pi-bars" 
+          styleClass="p-button-text p-button-lg" 
+          severity="warn"
+          (click)="asideToggled.emit()" />
+        
+      </div>
+    </ng-template>
 
-  <!-- Usuario -->
-  <div class="header-right">
-    <span class="user-name">Administrador</span>
-    <p-avatar 
-      label="A" 
-      shape="circle" 
-      size="large"
-      styleClass="avatar">
-    </p-avatar>
-  </div>
-</header>
+    <ng-template #end>
+      <div class="flex-auto">
+        <!-- Avatar -->
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          class="mr-2 cursor-pointer"
+          size="xlarge"
+          shape="circle"
+          (click)="menu.toggle($event)" />
+        
+        <!-- Menú emergente -->
+        <p-menu #menu [popup]="true" [model]="userMenuItems"></p-menu>
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>
