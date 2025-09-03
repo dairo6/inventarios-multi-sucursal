@@ -8,14 +8,16 @@
         </ng-template>
 
         <ng-template #header>
+
             <tr>
                 <th>NOMBRE</th>
                 <th>IMAGEN</th>
                 <th>PRECIO</th>
                 <th>CATEGORIA</th>
-                <th>RESEÑAS</th>
                 <th>ESTADO</th>
+                <th>ACCIONES</th>
             </tr>
+
         </ng-template>
 
         <ng-template #body let-product>
@@ -28,11 +30,16 @@
                 <td>{{ product.price | currency: 'USD' }}</td>
                 <td>{{ product.category }}</td>
                 <td>
-                    <p-rating [(ngModel)]="product.rating" readonly="true"></p-rating>
-                </td>
-                <td>
                     <p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)"></p-tag>
                 </td>
+                <td>
+                    <div class="card flex flex-wrap gap-4 justify-center">
+                        <p-button label="Editar" severity="success" />
+                        <p-button label="Eliminar" severity="danger" />
+                    </div>
+
+                </td>
+
             </tr>
         </ng-template>
 

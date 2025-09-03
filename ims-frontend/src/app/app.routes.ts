@@ -136,8 +136,5 @@ export const routes: Routes = [
     { path: 'lots/delete/:id', component: DeleteLot },
 
     // UI
-    { path: 'guarantees', component: ListGuarantee },
-    { path: 'guarantees/create', component: CreateGuarantee },
-    { path: 'guarantees/update/:id', component: UpdateGuarantee },
-    { path: 'guarantees/delete/:id', component: DeleteGuarantee },
+    
 ];
