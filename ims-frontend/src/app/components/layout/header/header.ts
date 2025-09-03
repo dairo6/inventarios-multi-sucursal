@@ -1,43 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { BadgeModule } from 'primeng/badge';
-import { AvatarModule } from 'primeng/avatar';
-import { InputTextModule } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
-import { Ripple } from 'primeng/ripple'
 import { Menubar } from 'primeng/menubar';
-import { ImageModule } from 'primeng/image';
+import { Button } from 'primeng/button';
+import { Image } from 'primeng/image';
+import { Avatar } from 'primeng/avatar';
 import { Menu } from 'primeng/menu';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-header',
-    standalone: true,
-    imports: [Menubar, BadgeModule, AvatarModule, InputTextModule, Menu, CommonModule, ImageModule],
-    templateUrl: './header.html',
-    styleUrl: './header.css'
+  selector: 'app-header',
+  standalone: true,
+  imports: [Menubar, Button, Image, Avatar, Menu, CommonModule],
+  templateUrl: './header.html',
+  styleUrls: ['./header.css']
 })
 export class Header implements OnInit {
-    items: MenuItem[] | undefined;
-    userMenuItems: MenuItem[] = [];
+  @Output() asideToggled = new EventEmitter<void>();
 
-    ngOnInit() {
-        this.userMenuItems = [
-            { label: 'Configuración', icon: 'pi pi-cog', command: () => this.config() },
-            { label: 'Perfil', icon: 'pi pi-user', command: () => this.profile() },
-            { separator: true },
-            { label: 'Cerrar sesión', icon: 'pi pi-sign-out', command: () => this.logout() }
-        ];
-    }
-    config() {
-        console.log('Abrir configuración');
-    }
+  items: MenuItem[] = [];
+  userMenuItems: MenuItem[] = [];
 
-    profile() {
-        console.log('Abrir perfil');
-    }
+ 
 
-    logout() {
-        console.log('Cerrar sesión');
-    }
-
+  ngOnInit() {
+    this.userMenuItems = [
+      { label: 'Settings', icon: 'pi pi-cog' },
+      { label: 'Logout', icon: 'pi pi-sign-out' }
+    ];
+  }
 }
+

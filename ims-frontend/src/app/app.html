@@ -1,22 +1,23 @@
-<!-- app.component.html -->
-
 <main class="flex flex-col min-h-screen">
 
   <!-- Header -->
   <header class="w-full shadow-md">
-    <app-header></app-header>
+    <app-header (asideToggled)="asideVisible = !asideVisible"></app-header>
   </header>
 
   <!-- Contenedor principal -->
-  <div class="flex flex-1">
+  <div class="flex flex-1 transition-all duration-300 overflow-hidden">
     
-    <!-- Aside -->
-    <aside class="w-64 bg-black-100 border-r hidden md:block">
-      <app-aside></app-aside>
+    <!-- Aside con animación -->
+    <aside 
+      class="bg-black-100 transition-all duration-300 overflow-hidden"
+      [class.w-64]="asideVisible"
+      [class.w-0]="!asideVisible">
+      <app-aside *ngIf="asideVisible"></app-aside>
     </aside>
 
-    <!-- Sección de contenido -->
-    <section class="flex-1 p-6 overflow-y-auto">
+    <!-- Sección de contenido scrollable -->
+    <section class="flex-1 p-6 overflow-y-auto transition-all duration-300">
       <router-outlet></router-outlet>
     </section>
   </div>
