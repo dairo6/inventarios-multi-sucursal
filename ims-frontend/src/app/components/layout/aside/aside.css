@@ -1,0 +1,30 @@
+:host ::ng-deep .custom-panelmenu {
+  /* Estilos generales del aside */
+  background: transparent; /* azul claro */
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  height: 100%;
+}
+
+/* Panel interno */
+:host ::ng-deep .custom-panelmenu .p-panelmenu-panel {
+  background: transparent;
+  border: none;
+  margin-bottom: 0.3rem;
+  border-radius: 0.5rem;
+}
+
+/* Headers principales */
+:host ::ng-deep .custom-panelmenu .p-panelmenu-header .p-panelmenu-header-link {
+  background: transparent;
+  color: #0f172a; /* gris oscuro */
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: 0.375rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+:host ::ng-deep .custom-panelmenu .p-panelmenu-header .p-panelmenu-header-link:hover {
+  background: transparent; /* azul-100 */
+}
+

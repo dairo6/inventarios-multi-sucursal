@@ -1,1 +1,65 @@
-<p>list-guarantee works!</p>
+<div class="card bg-blue-50 rounded-lg shadow-lg p-4"> 
+  <!-- Título y búsqueda -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold text-gray-900">
+      Lista de Garantias
+    </h2>
+    <div class="flex items-center gap-2"> 
+      <span class="p-input-icon-left"> 
+        <i class="pi pi-search"></i> 
+        <input pInputText 
+               type="text" 
+               placeholder="Buscar..." 
+               class="ml-2 rounded-md" /> 
+      </span> 
+      <p-button 
+        icon="pi pi-plus"
+        label="Nueva Garantia" 
+        severity="success" 
+        raised
+        [routerLink]="['/guarantees/create']" 
+        /> 
+    </div>
+  </div> 
+  
+  <!-- Tabla con scroll solo en el body -->
+  <div class="overflow-y-auto max-h-[345px] rounded-lg shadow-inner">
+    <table class="w-full border-collapse"> 
+      
+      <!-- Encabezado fijo -->
+      <thead class="sticky top-0 z-10">
+        <tr class="bg-blue-100 text-gray-900">
+        
+          <th class="py-3 px-4 text-center">Producto</th>
+          <th class="py-3 px-4 text-center">Descripcion</th>
+          <th class="py-3 px-4 text-center">Duracion</th>
+          <th class="py-3 px-4 text-center">Terminos</th>
+          <th class="py-3 px-4 text-center">Estado</th>
+          <th class="py-3 px-4 text-center">Acciones</th>
+        </tr>
+      </thead> 
+      
+      <!-- Cuerpo con scroll -->
+      <tbody class="bg-lime-50 text-gray-900 text-center">
+        <tr *ngFor="let guarantee of guarantees" class="hover:bg-green-100">
+        
+          <td class="py-3 px-4">{{ guarantee.product }}</td>
+          <td class="py-3 px-4">{{ guarantee.description}}</td>
+          <td class="py-3 px-4">{{ guarantee.durationMonths}}</td>
+          <td class="py-3 px-4">{{ guarantee.terms }}</td>
+          <td class="py-3 px-4">
+            <p-tag [value]="guarantee.status"
+                   [severity]="guarantee.status === 'ACTIVE' ? 'success' : 'danger'" /> 
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex justify-center gap-2"> 
+              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
+              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

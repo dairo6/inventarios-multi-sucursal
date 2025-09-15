@@ -5,72 +5,28 @@ import { RatingModule } from 'primeng/rating';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';  
+import { InputTextModule } from 'primeng/inputtext';
+import { InputText } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
+import { RouterModule } from '@angular/router';
+import { ProductI } from '../../../models/product';
+import { ProductService } from '../../../services/product';
 
 @Component({
   selector: 'app-list-product',
   standalone: true,
-  imports: [TableModule, TagModule, RatingModule, ButtonModule, CommonModule, FormsModule],
+  imports: [
+    TableModule, TagModule, RatingModule, 
+    ButtonModule, CommonModule, FormsModule, InputTextModule, InputText, Button, RouterModule ],
   templateUrl: './list-product.html',
   styleUrls: ['./list-product.css']
 })
 export class ListProduct {
-  products: any[] = [];
+  products: ProductI[] = [];
 
-  constructor() {
-    this.products = [
-      {
-        name: 'Bamboo Watch',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK'
-      },
-      {
-        name: 'Black Watch',
-        image: 'black-watch.jpg',
-        price: 72,
-        category: 'Accessories',
-        rating: 4,
-        inventoryStatus: 'LOWSTOCK'
-      },
-      {
-        name: 'Blue Band',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK'
-      },
-      {
-        name: 'Blue Band',
-        image: 'blue-band.jpg',
-        price: 79,
-        category: 'Fitness',
-        rating: 3,
-        inventoryStatus: 'OUTOFSTOCK'
-      },
-      {
-        name: 'Bamboo Watch',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        rating: 5,
-        inventoryStatus: 'INSTOCK'
-      },
-    ];
-  }
-
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
+  constructor(private productService: ProductService) {
+    this.productService.products$.subscribe(products => {
+      this.products = products;
+    });
   }
 }

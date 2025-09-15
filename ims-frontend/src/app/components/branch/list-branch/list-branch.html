@@ -1,1 +1,64 @@
-<p>list-branch works!</p>
+<div class="card bg-blue-50 rounded-lg shadow-lg p-4"> 
+  <!-- Título y búsqueda -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold text-gray-900">
+      Lista de Sucursales
+    </h2>
+    <div class="flex items-center gap-2"> 
+      <span class="p-input-icon-left"> 
+        <i class="pi pi-search"></i> 
+        <input pInputText 
+               type="text" 
+               placeholder="Buscar..." 
+               class="ml-2 rounded-md" /> 
+      </span> 
+      <p-button 
+        icon="pi pi-plus"
+        label="Nueva Sucursal" 
+        severity="success" 
+        raised 
+        [routerLink]="['/branches/create']" 
+        />
+    </div>
+  </div> 
+  
+  <!-- Tabla con scroll solo en el body -->
+  <div class="overflow-y-auto max-h-[345px] rounded-lg shadow-inner">
+    <table class="w-full border-collapse"> 
+      
+      <!-- Encabezado fijo -->
+      <thead class="sticky top-0 z-10">
+        <tr class="bg-blue-100 text-gray-900">
+          <th class="py-3 px-4 text-center">Nombre</th>
+          <th class="py-3 px-4 text-center">Código</th>
+          <th class="py-3 px-4 text-center">Dirección</th>
+          <th class="py-3 px-4 text-center">Teléfono</th>
+          <th class="py-3 px-4 text-center">Correo</th>
+          <th class="py-3 px-4 text-center">Estado</th>
+          <th class="py-3 px-4 text-center">Acciones</th>
+        </tr>
+      </thead> 
+      
+      <!-- Cuerpo con scroll -->
+      <tbody class="bg-lime-50 text-gray-900 text-center">
+        <tr *ngFor="let branch of branches" class="hover:bg-green-100">
+          <td class="py-3 px-4">{{ branch.name }}</td>
+          <td class="py-3 px-4">{{ branch.code }}</td>
+          <td class="py-3 px-4">{{ branch.address }}</td>
+          <td class="py-3 px-4">{{ branch.phone }}</td>
+          <td class="py-3 px-4">{{ branch.email }}</td>
+          <td class="py-3 px-4">
+            <p-tag [value]="branch.status"
+                   [severity]="branch.status === 'ACTIVE' ? 'success' : 'danger'" /> 
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex justify-center gap-2"> 
+              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
+              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

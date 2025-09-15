@@ -1,29 +1,33 @@
-<div class="card">
-  <p-menubar [model]="items">
+<div class="">
+  <p-menubar [model]="items" styleClass="!bg-blue-100 text-white !border-none">
+
+    <!-- Sección izquierda -->
     <ng-template #start>
       <div class="flex items-center gap-4">
-        <!-- Logo -->
-        <p-image src="Logo-Inventario.png" alt="Image" width="150" />
         <!-- Botón toggle aside -->
         <p-button 
           icon="pi pi-bars" 
-          styleClass="p-button-text p-button-lg" 
-          severity="warn"
-          (click)="asideToggled.emit()" />
-        
+          (click)="asideToggled.emit()"
+          styleClass="p-button-rounded p-button-text !text-orange-400 hover:!bg-blue-200" />
       </div>
     </ng-template>
 
+    <!-- Sección derecha -->
     <ng-template #end>
-      <div class="flex-auto">
-        <!-- Avatar -->
-        <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          class="mr-2 cursor-pointer"
-          size="xlarge"
-          shape="circle"
+      <div class="flex items-center gap-3">
+        <!-- Notificaciones con badge -->
+        <p-button 
+          icon="pi pi-bell" 
+          badge="3" 
+          badgeClass="!p-badge-danger"
+          styleClass="p-button-rounded p-button-text !text-orange-400 hover:!bg-blue-200">
+        </p-button>
+
+        <!-- Avatar con menú -->
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          class="cursor-pointer border-2 border-orange-400 hover:scale-105 transition" size="large" shape="circle"
           (click)="menu.toggle($event)" />
-        
+
         <!-- Menú emergente -->
         <p-menu #menu [popup]="true" [model]="userMenuItems"></p-menu>
       </div>
