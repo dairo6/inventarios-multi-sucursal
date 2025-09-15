@@ -32,6 +32,9 @@ Una empresa necesita un sistema para controlar el inventario distribuido en vari
 
 ---
 
+<img width="1365" height="603" alt="image" src="https://github.com/user-attachments/assets/bd5e3c36-b278-41fa-b84d-086faafd0fa3" />
+
+
 ## 🚀 Instalación y uso
 
 👨‍💻 Autor
