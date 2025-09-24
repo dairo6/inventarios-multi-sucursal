@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../database/db";
+import { sequelize } from "../database/connection";
 import { Category } from "./category";
 import { Supplier } from "./supplier";
 
@@ -59,26 +59,6 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    categoryId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "categories", // nombre de la tabla
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "RESTRICT",
-    },
-    supplierId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "suppliers", // nombre de la tabla
-        key: "id",
-      },
-      onUpdate: "CASCADE",
-      onDelete: "SET NULL",
-    },
     status: {
       type: DataTypes.ENUM("ACTIVE", "INACTIVE"),
       defaultValue: "ACTIVE",
@@ -93,5 +73,24 @@ Product.init(
 );
 
 // 🔹 Relaciones
-Product.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
-Product.belongsTo(Supplier, { foreignKey: "supplierId", as: "supplier" });
+Category.hasMany(Product, { 
+  foreignKey: "categoryId", 
+  sourceKey: "id" 
+});
+
+
+Product.belongsTo(Category, { 
+  foreignKey: "categoryId", 
+  targetKey: "id" 
+});
+
+
+Supplier.hasMany(Product, { 
+  foreignKey: "supplierId", 
+  sourceKey: "id" 
+});
+
+Product.belongsTo(Supplier, { 
+  foreignKey: "supplierId", 
+  targetKey: "id" 
+});

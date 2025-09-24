@@ -1,6 +1,16 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../database/db";
+import { sequelize } from "../database/connection";
 import { Product } from "./product";
+
+export interface GuaranteeI {
+  id: number;
+  productId: number;   // FK al producto
+  description: string;
+  durationMonths: number;
+  terms?: string;
+  status: "ACTIVE" | "EXPIRED";
+  readonly createdAt: Date;
+}
 
 export class Guarantee extends Model {
   public id!: number;
@@ -59,5 +69,12 @@ Guarantee.init(
 );
 
 // 🔗 Relaciones
-Guarantee.belongsTo(Product, { foreignKey: "productId", as: "product" });
-Product.hasMany(Guarantee, { foreignKey: "productId", as: "guarantees" });
+Product.hasMany(Guarantee, { 
+  foreignKey: "productId", 
+  sourceKey: "id" 
+});
+
+Guarantee.belongsTo(Product, { 
+  foreignKey: "productId", 
+  targetKey: "id" 
+});

@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../database/db";
-import { Warehouse } from "./warehouse";
+import { sequelize } from "../database/connection";
+
 
 export interface BranchI {
   id?: number;
@@ -14,7 +14,7 @@ export interface BranchI {
   updatedAt?: Date;
 }
 
-export class Branch extends Model implements BranchI {
+export class Branch extends Model {
   public id!: number;
   public name!: string;
   public code!: string;
@@ -82,5 +82,3 @@ Branch.init(
     timestamps: true, // createdAt y updatedAt automáticos
   }
 );
-// 🔹 Relación con Warehouse
-Branch.hasMany(Warehouse, { foreignKey: "branchId", as: "warehouses" });

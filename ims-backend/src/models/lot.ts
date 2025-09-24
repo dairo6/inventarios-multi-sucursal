@@ -1,10 +1,19 @@
 import { DataTypes, Model } from "sequelize";
-import { sequelize } from "../database/db";
+import { sequelize } from "../database/connection";
 import { Product } from "./product";
+
+export interface LotI {
+  id?: number;
+  productId: number;   // FK al producto
+  code: string;
+  expirationDate?: Date;
+  quantity: number;
+  status: "AVAILABLE" | "EXPIRED" | "BLOCKED";
+  readonly createdAt: Date;
+}
 
 export class Lot extends Model {
   public id!: number;
-  public productId!: number;   // FK al producto
   public code!: string;
   public expirationDate?: Date;
   public quantity!: number;
@@ -18,14 +27,6 @@ Lot.init(
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
-    },
-    productId: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      references: {
-        model: Product,
-        key: "id",
-      },
     },
     code: {
       type: DataTypes.STRING(100),
@@ -61,5 +62,12 @@ Lot.init(
 );
 
 // 🔗 Relaciones
-Lot.belongsTo(Product, { foreignKey: "productId", as: "product" });
-Product.hasMany(Lot, { foreignKey: "productId", as: "lots" });
+Lot.belongsTo(Product, { 
+  foreignKey: "productId", 
+  targetKey: "id" 
+});
+
+Product.hasMany(Lot, { 
+  foreignKey: "productId", 
+  sourceKey: "id", 
+});
