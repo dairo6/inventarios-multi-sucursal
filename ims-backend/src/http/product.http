@@ -1,0 +1,5 @@
+//product.http
+
+@token = tu_token_here
+
+GET https://localhost:3000/api/productos

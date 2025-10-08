@@ -5,6 +5,7 @@ export class ProductRoutes {
   public productController: ProductController = new ProductController();
 
   public routes(app: Application): void {
+
     app.route("/productos").get(this.productController.getAllProducts); // Get all products
     
     app.route("/productos/:id").get(this.productController.getproductById); // Get a sale by ID
