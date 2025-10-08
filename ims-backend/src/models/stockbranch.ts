@@ -1,12 +1,25 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
-import { Branch  } from "./branch";
+import { Branch } from "./branch";
 import { Product } from "./product";
 
+// 🟢 Interfaz para tipado en TypeScript
+export interface StockBranchI {
+  id?: number;
+  branch_id: number;
+  product_id: number;
+  quantity: number;
+  minStock: number;
+  maxStock: number;
+  status: "ACTIVE" | "INACTIVE";
+  updatedAt?: Date;
+}
+
+// 🟣 Clase del modelo Sequelize
 export class StockBranch extends Model {
   public id!: number;
-  public branchId!: number;
-  public productId!: number;
+  public branch_id!: number;
+  public product_id!: number;
   public quantity!: number;
   public minStock!: number;
   public maxStock!: number;
@@ -14,6 +27,7 @@ export class StockBranch extends Model {
   public readonly updatedAt!: Date;
 }
 
+// ⚙️ Inicialización del modelo
 StockBranch.init(
   {
     id: {
@@ -21,7 +35,7 @@ StockBranch.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    branchId: {
+    branch_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
@@ -29,7 +43,7 @@ StockBranch.init(
         key: "id",
       },
     },
-    productId: {
+    product_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
@@ -67,13 +81,27 @@ StockBranch.init(
     sequelize,
     modelName: "StockBranch",
     tableName: "stock_branches",
-    createdAt: false, // solo updatedAt
+    createdAt: false, // Solo mantiene updatedAt
   }
 );
 
-// 🔗 Relaciones
-StockBranch.belongsTo(Branch, { foreignKey: "branchId", as: "branch" });
-Branch.hasMany(StockBranch, { foreignKey: "branchId", as: "stock" });
+// 🔗 Relaciones 1:N
+Branch.hasMany(StockBranch, {
+  foreignKey: "branch_id",
+  sourceKey: "id",
+});
 
-StockBranch.belongsTo(Product, { foreignKey: "productId", as: "product" });
-Product.hasMany(StockBranch, { foreignKey: "productId", as: "stock" });
+StockBranch.belongsTo(Branch, {
+  foreignKey: "branch_id",
+  targetKey: "id",
+});
+
+Product.hasMany(StockBranch, {
+  foreignKey: "product_id",
+  sourceKey: "id",
+});
+
+StockBranch.belongsTo(Product, {
+  foreignKey: "product_id",
+  targetKey: "id",
+});

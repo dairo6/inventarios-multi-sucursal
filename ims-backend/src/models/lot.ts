@@ -4,7 +4,7 @@ import { Product } from "./product";
 
 export interface LotI {
   id?: number;
-  productId: number;   // FK al producto
+  product_id: number;   // FK al producto
   code: string;
   expirationDate?: Date;
   quantity: number;
@@ -14,6 +14,7 @@ export interface LotI {
 
 export class Lot extends Model {
   public id!: number;
+  public product_id!: number;
   public code!: string;
   public expirationDate?: Date;
   public quantity!: number;
@@ -27,6 +28,10 @@ Lot.init(
       type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
+    },
+    product_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
     },
     code: {
       type: DataTypes.STRING(100),
@@ -63,11 +68,11 @@ Lot.init(
 
 // 🔗 Relaciones
 Lot.belongsTo(Product, { 
-  foreignKey: "productId", 
+  foreignKey: "product_id", 
   targetKey: "id" 
 });
 
 Product.hasMany(Lot, { 
-  foreignKey: "productId", 
+  foreignKey: "product_id", 
   sourceKey: "id", 
 });

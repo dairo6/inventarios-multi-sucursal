@@ -2,9 +2,17 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
 import { Warehouse } from "./warehouse";
 
-export class Location extends Model {
+export interface LocationI {
+  id?: number;
+  warehouse_id: number;
+  code: string;
+  description?: string;
+  status: "AVAILABLE" | "OCCUPIED" | "BLOCKED";
+}
+
+export class Location extends Model  {
   public id!: number;
-  public warehouseId!: number;
+  public warehouse_id!: number;
   public code!: string;
   public description?: string;
   public status!: "AVAILABLE" | "OCCUPIED" | "BLOCKED";
@@ -17,7 +25,7 @@ Location.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    warehouseId: {
+    warehouse_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
@@ -43,5 +51,14 @@ Location.init(
     timestamps: false,
   }
 );
-// Location pertenece a un Warehouse
-Location.belongsTo(Warehouse, { foreignKey: "warehouseId", as: "warehouse" });
+
+// 🔗 Relaciones
+Warehouse.hasMany(Location, {
+  foreignKey: "warehouse_id",
+  sourceKey: "id",
+});
+
+Location.belongsTo(Warehouse, {
+  foreignKey: "warehouse_id",
+  targetKey: "id",
+});

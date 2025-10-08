@@ -2,9 +2,10 @@ import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
 import { Branch } from "./branch";
 
+// 🟢 Interfaz TypeScript
 export interface WarehouseI {
   id?: number;
-  branchId: number;
+  branch_id: number;
   name: string;
   code: string;
   description?: string;
@@ -13,9 +14,10 @@ export interface WarehouseI {
   updatedAt?: Date;
 }
 
-export class Warehouse extends Model implements WarehouseI {
+// 🟣 Clase del modelo Sequelize
+export class Warehouse extends Model {
   public id!: number;
-  public branchId!: number;
+  public branch_id!: number;
   public name!: string;
   public code!: string;
   public description?: string;
@@ -24,32 +26,33 @@ export class Warehouse extends Model implements WarehouseI {
   public readonly updatedAt!: Date;
 }
 
+// ⚙️ Inicialización del modelo
 Warehouse.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    branchId: {
-      type: DataTypes.INTEGER,
+    branch_id: {
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
-        model: "branches", // tabla Branch
+        model: Branch,
         key: "id",
       },
       onUpdate: "CASCADE",
       onDelete: "RESTRICT",
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
       validate: {
         notEmpty: { msg: "Name cannot be empty" },
       },
     },
     code: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
       validate: {
@@ -57,11 +60,12 @@ Warehouse.init(
       },
     },
     description: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING(255),
       allowNull: true,
     },
     status: {
       type: DataTypes.ENUM("ACTIVE", "INACTIVE"),
+      allowNull: false,
       defaultValue: "ACTIVE",
     },
   },
@@ -69,10 +73,17 @@ Warehouse.init(
     sequelize,
     modelName: "Warehouse",
     tableName: "warehouses",
-    timestamps: true, // createdAt y updatedAt automáticos
+    timestamps: true, // createdAt y updatedAt
   }
 );
 
-// 🔹 Relación con Branch
-Warehouse.belongsTo(Branch, { foreignKey: "branchId", as: "branch" });
-Branch.hasMany(Warehouse, { foreignKey: "branchId", as: "warehouses" });
+// 🔗 Relaciones
+Branch.hasMany(Warehouse, {
+  foreignKey: "branch_id",
+  sourceKey: "id",
+});
+
+Warehouse.belongsTo(Branch, {
+  foreignKey: "branch_id",
+  targetKey: "id",
+});

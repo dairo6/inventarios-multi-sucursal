@@ -3,8 +3,8 @@ import { sequelize } from "../database/connection";
 import { Product } from "./product";
 
 export interface GuaranteeI {
-  id: number;
-  productId: number;   // FK al producto
+  id?: number;
+  product_id: number;   // FK al producto
   description: string;
   durationMonths: number;
   terms?: string;
@@ -14,7 +14,7 @@ export interface GuaranteeI {
 
 export class Guarantee extends Model {
   public id!: number;
-  public productId!: number;   // FK al producto
+  public product_id!: number;   // FK al producto
   public description!: string;
   public durationMonths!: number;
   public terms?: string;
@@ -29,7 +29,7 @@ Guarantee.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    productId: {
+    product_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
@@ -70,11 +70,11 @@ Guarantee.init(
 
 // 🔗 Relaciones
 Product.hasMany(Guarantee, { 
-  foreignKey: "productId", 
+  foreignKey: "product_id", 
   sourceKey: "id" 
 });
 
 Guarantee.belongsTo(Product, { 
-  foreignKey: "productId", 
+  foreignKey: "product_id", 
   targetKey: "id" 
 });

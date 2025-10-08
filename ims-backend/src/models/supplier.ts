@@ -14,7 +14,7 @@ export interface SupplierI {
   updatedAt?: Date;
 }
 
-export class Supplier extends Model implements SupplierI {
+export class Supplier extends Model {
   public id!: number;
   public name!: string;
   public taxId!: string;

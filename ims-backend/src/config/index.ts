@@ -36,6 +36,16 @@ export class App {
   // Route configuration: Definicion de rutas de los modelos
   private routes(): void {
      this.routePrv.productRoutes.routes(this.app);
+      this.routePrv.branchRoutes.routes(this.app);
+      this.routePrv.categoryRoutes.routes(this.app);
+      this.routePrv.guaranteeRoutes.routes(this.app);
+      this.routePrv.inventoryMovementRoutes.routes(this.app);
+      this.routePrv.locationRoutes.routes(this.app);
+      this.routePrv.lotRoutes.routes(this.app);
+      this.routePrv.stockBranchRoutes.routes(this.app);
+      this.routePrv.supplierRoutes.routes(this.app);
+      this.routePrv.warehouseRoutes.routes(this.app);
+      
   }
 
   // Method to connect and synchronize the database

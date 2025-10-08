@@ -9,26 +9,24 @@ export interface ProductI {
   code: string;
   description?: string;
   price: number;
+  stock: number;
   unit: string;
-  categoryId: number;
-  supplierId?: number;
+  category_id: number;
+  supplier_id?: number;
   status: "ACTIVE" | "INACTIVE";
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-export class Product extends Model implements ProductI {
+export class Product extends Model {
   public id!: number;
   public name!: string;
   public code!: string;
   public description?: string;
   public price!: number;
+  public stock!: number;
   public unit!: string;
-  public categoryId!: number;
-  public supplierId!: number;
+  public category_id!: number;
+  public supplier_id?: number;
   public status!: "ACTIVE" | "INACTIVE";
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 Product.init(
@@ -41,11 +39,17 @@ Product.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: { msg: "El nombre no puede estar vacío" },
+      },
     },
     code: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        notEmpty: { msg: "El código no puede estar vacío" },
+      },
     },
     description: {
       type: DataTypes.TEXT,
@@ -54,10 +58,43 @@ Product.init(
     price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+      validate: {
+        isDecimal: { msg: "El precio debe ser un número válido" },
+      },
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: { msg: "El stock debe ser un número entero" },
+        min: {
+          args: [0],
+          msg: "El stock no puede ser negativo",
+        },
+      },
     },
     unit: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: { msg: "La unidad no puede estar vacía" },
+      },
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Category,
+        key: "id",
+      },
+    },
+    supplier_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: Supplier,
+        key: "id",
+      },
     },
     status: {
       type: DataTypes.ENUM("ACTIVE", "INACTIVE"),
@@ -68,29 +105,27 @@ Product.init(
     sequelize,
     modelName: "Product",
     tableName: "products",
-    timestamps: true,
+    timestamps: false, // igual que el profe
   }
 );
 
 // 🔹 Relaciones
-Category.hasMany(Product, { 
-  foreignKey: "categoryId", 
-  sourceKey: "id" 
+Category.hasMany(Product, {
+  foreignKey: "category_id",
+  sourceKey: "id",
 });
 
-
-Product.belongsTo(Category, { 
-  foreignKey: "categoryId", 
-  targetKey: "id" 
+Product.belongsTo(Category, {
+  foreignKey: "category_id",
+  targetKey: "id",
 });
 
-
-Supplier.hasMany(Product, { 
-  foreignKey: "supplierId", 
-  sourceKey: "id" 
+Supplier.hasMany(Product, {
+  foreignKey: "supplier_id",
+  sourceKey: "id",
 });
 
-Product.belongsTo(Supplier, { 
-  foreignKey: "supplierId", 
-  targetKey: "id" 
+Product.belongsTo(Supplier, {
+  foreignKey: "supplier_id",
+  targetKey: "id",
 });
