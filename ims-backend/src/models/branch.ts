@@ -29,7 +29,7 @@ export class Branch extends Model {
 Branch.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -58,9 +58,9 @@ Branch.init(
     phone: {
       type: DataTypes.STRING,
       allowNull: true,
-      validate: {
-        len: { args: [7, 15], msg: "Phone must be between 7 and 15 characters" },
-      },
+      // validate: {
+      //   len: { args: [7, 10], msg: "Phone must be between 7 and 10 characters" },
+      // },
     },
     email: {
       type: DataTypes.STRING,

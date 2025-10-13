@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Product, ProductI } from "../models/product";
 
 export class ProductController {
-  // Get all clients with status "ACTIVE"
+  // Get all with status "ACTIVE"
   public async getAllProducts(req: Request, res: Response) {
     try {
       const products: ProductI[] = await Product.findAll({
@@ -10,7 +10,7 @@ export class ProductController {
       });
       res.status(200).json({ products });
     } catch (error) {
-      res.status(500).json({ error: "Error fetching clients" });
+      res.status(500).json({ error: "Error fetching product" });
     }
   }
 

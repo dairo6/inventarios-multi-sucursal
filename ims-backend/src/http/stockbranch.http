@@ -1,0 +1,93 @@
+//stockbranch.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### get all stock branches
+GET {{baseUrl}}/stock-sucursales
+
+
+### get a stock branch by ID
+GET {{baseUrl}}/stock-sucursales/1
+
+
+### create a new stock branch
+POST {{baseUrl}}/stock-sucursales
+Content-Type: application/json
+
+{
+  "branch_id": 3,
+  "product_id": 3,
+  "quantity": 150,
+  "minStock": 50,
+  "maxStock": 300,
+  "status": "ACTIVE"
+} 
+
+### update a stock branch by ID
+PATCH {{baseUrl}}/stock-sucursales/3483
+Content-Type: application/json
+
+{
+  "branch_id": 3,
+  "product_id": 3,
+  "quantity": 222,
+  "minStock": 44,
+  "maxStock": 300,
+  "status": "ACTIVE"
+} 
+
+### delete a stock branch by ID (physical)
+DELETE {{baseUrl}}/stock-sucursales/6
+
+
+### delete a stock branch by ID (logical)
+DELETE {{baseUrl}}/stock-sucursales/8/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all stock branches (with auth)
+GET {{baseUrl}}/api/stock-sucursales
+Authorization: Bearer {{token}}
+
+### get a stock branch by ID (with auth)
+GET {{baseUrl}}/api/stock-sucursales/1
+Authorization: Bearer {{token}}
+
+### create a new stock branch (with auth)
+POST {{baseUrl}}/api/stock-sucursales 
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "branch_id": 3,
+  "product_id": 3,
+  "quantity": 150,
+  "minStock": 50,
+  "maxStock": 300,
+  "status": "ACTIVE"
+}
+
+### update a stock branch by ID (with auth)
+PATCH {{baseUrl}}/api/stock-sucursales/3483
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "branch_id": 3,
+  "product_id": 3,
+  "quantity": 222,
+  "minStock": 44,
+  "maxStock": 300,
+  "status": "ACTIVE"
+}
+
+### delete a stock branch by ID (physical) (with auth)
+DELETE {{baseUrl}}/api/stock-sucursales/6
+Authorization: Bearer {{token}}
+
+### delete a stock branch by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/stock-sucursales/8/logic
+Authorization: Bearer {{token}}

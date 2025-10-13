@@ -1,0 +1,90 @@
+//lot.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+### ================== RUTAS SIN AUTENTICACIÓN ==================
+
+### get all lots
+GET {{baseUrl}}/lotes
+
+
+### get a lot by ID
+GET {{baseUrl}}/lotes/1
+
+
+### create a new product
+POST {{baseUrl}}/lotes
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "code": "LOT-Preeba-001",
+  "expirationDate": "2025-11-30T11:20:54.061Z",
+  "quantity": 70,
+  "status": "AVAILABLE"
+} 
+
+### update a product by ID
+PATCH {{baseUrl}}/lotes/174
+Content-Type: application/json
+
+{
+   "product_id": 5,
+  "code": "LOT-Preeba-001 UPDATED",
+  "expirationDate": "2025-11-30T11:20:54.061Z",
+  "quantity": 80,
+  "status": "AVAILABLE"
+} 
+
+### delete a product by ID
+DELETE {{baseUrl}}/lotes/60
+
+
+### delete a product by ID (logical)
+DELETE {{baseUrl}}/lotes/8/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all lots (with auth)
+GET {{baseUrl}}/api/lotes
+Authorization: Bearer {{token}}
+
+### get a lot by ID (with auth)
+GET {{baseUrl}}/api/lotes/1
+Authorization: Bearer {{token}}
+
+### create a new product (with auth)
+POST {{baseUrl}}/api/lotes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "code": "LOT-Preeba-001",
+  "expirationDate": "2025-11-30T11:20:54.061Z",
+  "quantity": 70,
+  "status": "AVAILABLE"
+}
+
+### update a product by ID (with auth)
+PATCH {{baseUrl}}/api/lotes/174
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "product_id": 5,
+  "code": "LOT-Preeba-001 UPDATED",
+  "expirationDate": "2025-11-30T11:20:54.061Z",
+  "quantity": 80,
+  "status": "AVAILABLE"
+}
+
+### delete a product by ID (with auth)
+DELETE {{baseUrl}}/api/lotes/60
+Authorization: Bearer {{token}}
+
+### delete a product by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/lotes/8/logic  
+Authorization: Bearer {{token}}

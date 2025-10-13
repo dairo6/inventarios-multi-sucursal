@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { Location, LocationI } from "../models/location";
-
+import { Op } from "sequelize";
 export class LocationController {
   // get all locations with status "ACTIVE"
   public async getAllLocations(req: Request, res: Response) {
     try {
       const locations: LocationI[] = await Location.findAll({
-        where: { status: "ACTIVE" },
       });
       res.status(200).json({ locations });
     } catch (error) {
@@ -19,7 +18,7 @@ export class LocationController {
     try {
       const { id: pk } = req.params;
       const location = await Location.findOne({
-        where: { id: pk, status: "ACTIVE" },
+        where: { id: pk, },
       });
 
       if (location) {
@@ -59,7 +58,7 @@ export class LocationController {
 
     try {
       const locationExist = await Location.findOne({
-        where: { id: pk, status: "ACTIVE" },
+        where: { id: pk },
       });
 
       if (locationExist) {
@@ -98,20 +97,24 @@ export class LocationController {
 
   // Delete a location logically (set status to "INACTIVE")
   public async deleteLocationAdv(req: Request, res: Response) {
-    try {
-      const { id: pk } = req.params;
-      const locationToUpdate = await Location.findOne({
-        where: { id: pk, status: "ACTIVE" },
-      });
+  try {
+    const { id: pk } = req.params;
+    const locationToUpdate = await Location.findOne({
+      where: {
+        id: pk,
+        status: { [Op.or]: ["AVAILABLE", "OCCUPIED"] },
+      },
+    });
 
-      if (locationToUpdate) {
-        await locationToUpdate.update({ status: "INACTIVE" });
-        res.status(200).json({ message: "Location marked as inactive" });
-      } else {
-        res.status(404).json({ error: "Location not found" });
-      }
-    } catch (error) {
-      res.status(500).json({ error: "Error marking location as inactive" });
+    if (locationToUpdate) {
+      await locationToUpdate.update({ status: "BLOCKED" });
+      res.status(200).json({ message: "Location marked as blocked" });
+    } else {
+      res.status(404).json({ error: "Location not found or already blocked" });
     }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error marking location as blocked" });
   }
+}
 }

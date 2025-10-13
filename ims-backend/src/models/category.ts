@@ -4,19 +4,21 @@ import { sequelize } from "../database/connection";
 export interface CategoryI {
   id?: number;
   name: string;
+  description?: string;
   status: "ACTIVE" | "INACTIVE";
 }
 
-export class Category extends Model implements CategoryI {
+export class Category extends Model {
   public id!: number;
   public name!: string;
+  public description!: string;
   public status!: "ACTIVE" | "INACTIVE";
 }
 
 Category.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -26,6 +28,10 @@ Category.init(
       validate: {
         notEmpty: { msg: "Name cannot be empty" },
       },
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     status: {
       type: DataTypes.ENUM("ACTIVE", "INACTIVE"),

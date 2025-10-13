@@ -34,11 +34,12 @@ export class CategoryController {
 
   // ✅ Create a new category
   public async createCategory(req: Request, res: Response) {
-    const { name, status } = req.body;
+    const { name, description, status } = req.body;
 
     try {
       let body: CategoryI = {
         name,
+        description,
         status,
       };
 
@@ -52,11 +53,12 @@ export class CategoryController {
   // ✅ Update a category
   public async updateCategory(req: Request, res: Response) {
     const { id: pk } = req.params;
-    const { name, status } = req.body;
+    const { name, description, status } = req.body;
 
     try {
       const body: CategoryI = {
         name,
+        description,
         status,
       };
 

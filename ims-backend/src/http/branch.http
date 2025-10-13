@@ -1,0 +1,96 @@
+//branch.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYwMzI3NDU1LCJleHAiOjE3NjAzMjgwNTV9.rPghKz0EKKixc5k5YokoPQ5LazIYjG7ekWRuSjeIprs
+
+@baseUrl = http://localhost:3000
+
+
+### Get all branches
+GET {{baseUrl}}/sucursales
+
+
+### Get branch by ID
+GET {{baseUrl}}/sucursales/20
+
+
+### Create a new branch
+POST {{baseUrl}}/sucursales
+Content-Type: application/json
+
+{
+  "name": "sucursal de prueba",
+  "code": "SUC001",
+  "address": "Calle 123 #45-67",
+  "phone": "1234567890",
+  "email": "SUC001@gmail.com",
+  "is_active": "ACTIVE"
+} 
+
+### update a branch by ID
+PATCH {{baseUrl}}/sucursales/1
+Content-Type: application/json
+
+{
+  "name": "sucursal de prueba editada",
+  "code": "SUC02",
+  "address": "Calle 123 #45-634",
+  "phone": "1234243450",
+  "email": "SUC02@gmail.com",
+  "is_active": "ACTIVE"
+} 
+
+### Delete a branch by ID
+DELETE {{baseUrl}}/sucursales/2
+
+
+### Delete a branch by ID (logical)
+DELETE {{baseUrl}}/sucursales/6/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### Get all branches (with auth)
+GET {{baseUrl}}/api/sucursales
+Authorization: Bearer {{token}}
+
+### Get branch by ID (with auth)
+GET {{baseUrl}}/api/sucursales/3
+Authorization: Bearer {{token}} 
+
+### Create a new branch (with auth)
+POST {{baseUrl}}/api/sucursales
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "name": "sucursal de prueba con auth",
+  "code": "SUC003",
+  "address": "Calle 123 #45-67",
+  "phone": "1234567890",
+  "email": "dsr@gmail.com",
+  "is_active": "ACTIVE"
+}
+
+### update a branch by ID (with auth)
+PATCH {{baseUrl}}/api/sucursales/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "sucursal de prueba editada con auth",
+  "code": "SUC02",
+  "address": "Calle 123 #45-634",
+  "phone": "1234243450",
+  "email": "dam@hotmail.com",
+  "is_active": "ACTIVE"
+}
+
+### Delete a branch by ID (with auth)
+DELETE {{baseUrl}}/api/sucursales/2
+Authorization: Bearer {{token}}
+
+### Delete a branch by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/sucursales/6/logic
+Authorization: Bearer {{token}}
+
+
+

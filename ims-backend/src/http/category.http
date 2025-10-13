@@ -1,0 +1,82 @@
+//category.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### get all categories
+GET {{baseUrl}}/categorias
+
+
+### get category by ID
+GET {{baseUrl}}/categorias/1
+
+
+### create a new category
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "name": "categoria de prueba",
+  "description": "wjehfwejfpwejpfjwe",
+  "is_active": "ACTIVE"
+} 
+
+### update a category by ID
+PATCH {{baseUrl}}/categorias/62
+Content-Type: application/json
+
+{
+  "name": "categoria de prueba 3 editada",
+  "description": "wjehfwejfpwejpfjwe",
+  "is_active": "ACTIVE"
+} 
+
+### delete a category by ID
+DELETE {{baseUrl}}/categorias/62
+
+
+### delete a category by ID (logical)
+DELETE {{baseUrl}}/categorias/61/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all categories (with auth)
+GET {{baseUrl}}/api/categorias
+Authorization: Bearer {{token}}
+
+### get category by ID (with auth)
+GET {{baseUrl}}/api/categorias/1
+Authorization: Bearer {{token}}
+
+### create a new category (with auth)
+POST {{baseUrl}}/api/categorias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "categoria de prueba con auth",
+  "description": "wjehfwejfpwejpfjwe",
+  "is_active": "ACTIVE"
+}
+
+### update a category by ID (with auth)
+PATCH {{baseUrl}}/api/categorias/62
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "categoria de prueba 3 editada con auth",
+  "description": "wjehfwejfpwejpfjwe",
+  "is_active": "ACTIVE"
+}
+
+### delete a category by ID (with auth)
+DELETE {{baseUrl}}/api/categorias/62
+Authorization: Bearer {{token}}
+
+### delete a category by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/categorias/61/logic 
+Authorization: Bearer {{token}}
+

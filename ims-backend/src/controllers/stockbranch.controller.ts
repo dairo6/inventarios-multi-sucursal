@@ -10,8 +10,8 @@ export class StockBranchController {
       const stockBranches: StockBranchI[] = await StockBranch.findAll({
         where: { status: "ACTIVE" },
         include: [
-          { model: Product, as: "product" },
-          { model: Branch, as: "branch" },
+          { model: Product },
+          { model: Branch},
         ],
       });
       res.status(200).json({ stockBranches });
@@ -27,8 +27,8 @@ export class StockBranchController {
       const stockBranch = await StockBranch.findOne({
         where: { id: pk, status: "ACTIVE" },
         include: [
-          { model: Product, as: "product" },
-          { model: Branch, as: "branch" },
+          { model: Product},
+          { model: Branch },
         ],
       });
 

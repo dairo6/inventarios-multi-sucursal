@@ -1,0 +1,92 @@
+//warehouse.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYwMzI2NTg5LCJleHAiOjE3NjAzMjcxODl9.ARuC0pxuTk7ybkDkNKHrwz8ZWREEs-s07aUrPKxB1NE
+
+@baseUrl = http://localhost:3000
+
+
+### get all warehouses
+GET {{baseUrl}}/bodegas
+
+
+### get a warehouse by ID
+GET {{baseUrl}}/bodegas/1
+
+
+### create a new warehouse
+POST {{baseUrl}}/bodegas
+Content-Type: application/json
+
+{
+  "branch_id": 6,
+  "name": "Bodega 33",
+  "code": "efs33",
+  "description": "Bodega de prueba 33",
+  "status": "ACTIVE"
+} 
+
+### update a warehouse by ID
+PATCH {{baseUrl}}/bodegas/60
+Content-Type: application/json
+
+{
+  "branch_id": 6,
+  "name": "Bodega Actualizada",
+  "code": "efs33UPDATED",
+  "description": "Bodega de prueba 33 ACTUALIZADA",
+  "status": "ACTIVE"
+} 
+
+### delete a warehouse by ID
+DELETE {{baseUrl}}/bodegas/60
+
+
+### delete a warehouse by ID (logical)
+DELETE {{baseUrl}}/bodegas/8/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================//
+
+### get all warehouse (with auth)
+GET {{baseUrl}}/api/bodegas
+Authorization: Bearer {{token}}
+
+### get a warehouse by ID (with auth)
+GET {{baseUrl}}/api/bodegas/1
+Authorization: Bearer {{token}}
+
+### create a new warehouse (with auth)
+POST {{baseUrl}}/api/bodegas 
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "branch_id": 6,
+  "name": "Bodega prueba 66",
+  "code": "efs33",
+  "description": "Bodega de prueba 666",
+  "status": "ACTIVE"
+}
+
+### update a stock warehouse by ID (with auth)
+PATCH {{baseUrl}}/api/bodegas/30
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "branch_id": 6,
+  "name": "Bodega Actualizada 777",
+  "code": "efs33",
+  "description": "Bodega de prueba 777",
+  "status": "ACTIVE"
+}
+
+### delete a stock warehouse by ID (physical) (with auth)
+DELETE {{baseUrl}}/api/bodegas/6
+Authorization: Bearer {{token}}
+
+### delete a stock warehouse by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/bodegas/8/logic
+Authorization: Bearer {{token}}
+
+
+

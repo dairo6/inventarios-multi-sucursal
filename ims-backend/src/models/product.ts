@@ -32,9 +32,10 @@ export class Product extends Model {
 Product.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
+      
     },
     name: {
       type: DataTypes.STRING,
@@ -81,7 +82,7 @@ Product.init(
       },
     },
     category_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
         model: Category,

@@ -1,0 +1,87 @@
+//location.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### Get all locations
+GET {{baseUrl}}/ubicaciones
+
+
+### Get location by ID
+GET {{baseUrl}}/ubicaciones/1
+
+
+### Create a new location
+POST {{baseUrl}}/ubicaciones
+Content-Type: application/json
+
+{
+  "warehouse_id": 1,
+  "code": "LOC-Prueba01",
+  "description": "Ubicación de prueba",
+  "status": "AVAILABLE"
+} 
+
+### Update a location by ID
+PATCH {{baseUrl}}/ubicaciones/760
+Content-Type: application/json
+
+{
+  "warehouse_id": 5,
+  "code": "LOC-Prue-editada",
+  "description": "Ubicación editada de prueba",
+  "status": "AVAILABLE"
+} 
+
+### Delete a location by ID
+DELETE {{baseUrl}}/ubicaciones/760
+
+
+### Delete a location by ID (logical)
+DELETE {{baseUrl}}/ubicaciones/759/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### Get all locations (with auth)
+
+GET {{baseUrl}}/api/ubicaciones
+Authorization: Bearer {{token}}
+
+### Get location by ID (with auth)
+GET {{baseUrl}}/api/ubicaciones/1
+Authorization: Bearer {{token}} 
+
+### Create a new location (with auth)
+POST {{baseUrl}}/api/ubicaciones
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "warehouse_id": 1,
+  "code": "LOC-Prueba01",
+  "description": "Ubicación de prueba",
+  "status": "AVAILABLE"
+}
+
+### Update a location by ID (with auth)
+PATCH {{baseUrl}}/api/ubicaciones/760
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "warehouse_id": 5,
+  "code": "LOC-Prue-editada",
+  "description": "Ubicación editada de prueba",
+  "status": "AVAILABLE"
+}
+
+### Delete a location by ID (with auth)
+DELETE {{baseUrl}}/api/ubicaciones/760
+Authorization: Bearer {{token}}
+
+### Delete a location by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/ubicaciones/759/logic
+Authorization: Bearer {{token}}
+

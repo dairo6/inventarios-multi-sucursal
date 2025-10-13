@@ -35,7 +35,7 @@ export class App {
 
   // Route configuration: Definicion de rutas de los modelos
   private routes(): void {
-     this.routePrv.productRoutes.routes(this.app);
+      this.routePrv.productRoutes.routes(this.app);
       this.routePrv.branchRoutes.routes(this.app);
       this.routePrv.categoryRoutes.routes(this.app);
       this.routePrv.guaranteeRoutes.routes(this.app);
@@ -46,12 +46,20 @@ export class App {
       this.routePrv.supplierRoutes.routes(this.app);
       this.routePrv.warehouseRoutes.routes(this.app);
       
+      // Rotes of authentication and authorization
+      this.routePrv.userRoutes.routes(this.app);
+      this.routePrv.roleRoutes.routes(this.app);
+      this.routePrv.roleUserRoutes.routes(this.app);
+      this.routePrv.resourceRoutes.routes(this.app);
+      this.routePrv.resourceRoleRoutes.routes(this.app);
+      this.routePrv.refreshTokenRoutes.routes(this.app);
+      this.routePrv.authRoutes.routes(this.app);
   }
 
   // Method to connect and synchronize the database
   private async dbConnection(): Promise<void> {
     try {
-      await sequelize.sync({ force: true }); // Synchronize the database
+      await sequelize.sync({ force: false }); // Synchronize the database, you cant change for true in production
       console.log("Database connected successfully");
     } catch (error) {
       console.error("Unable to connect to the database:", error);

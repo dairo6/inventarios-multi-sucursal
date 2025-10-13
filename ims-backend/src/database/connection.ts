@@ -1,68 +1,105 @@
-import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-let dbConfig: any = {};
-
-switch (process.env.DB_DIALECT) {
-  case 'postgres':
-    dbConfig = {
-      database: process.env.PG_NAME,
-      username: process.env.PG_USER,
-      password: process.env.PG_PASS,
-      host: process.env.PG_HOST,
-      port: Number(process.env.PG_PORT) || 5432,
-      dialect: 'postgres',
-      timezone: process.env.DB_TIMEZONE || 'America/Bogota',
-    };
-    break;
-  case 'mssql':
-    dbConfig = {
-      database: process.env.MSSQL_NAME,
-      username: process.env.MSSQL_USER,
-      password: process.env.MSSQL_PASS,
-      host: process.env.MSSQL_HOST,
-      port: Number(process.env.MSSQL_PORT) || 1433,
-      dialect: 'mssql',
-      timezone: process.env.DB_TIMEZONE || 'America/Bogota',
-      dialectOptions: {
-        options: {
-          encrypt: false,
-        }
-      }
-    };
-    break;
-  case 'oracle':
-    dbConfig = {
-      database: process.env.ORACLE_NAME,
-      username: process.env.ORACLE_USER,
-      password: process.env.ORACLE_PASS,
-      host: process.env.ORACLE_HOST,
-      port: Number(process.env.ORACLE_PORT) || 1521,
-      dialect: 'oracle',
-      dialectOptions: {
-        connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_SID}`
-      },
-      timezone: process.env.DB_TIMEZONE || 'America/Bogota',
-    };
-    break;
-  default: // mysql
-    dbConfig = {
-      database: process.env.DB_NAME,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT) || 3306,
-      dialect: 'mysql',
-      timezone: process.env.DB_TIMEZONE || 'America/Bogota',
-    };
+interface DatabaseConfig {
+  dialect: string;
+  host: string;
+  username: string;
+  password: string;
+  database: string;
+  port: number;
+  dialectOptions?: any;
 }
 
+const dbConfigurations: Record<string, DatabaseConfig> = {
+  mysql: {
+    dialect: "mysql",
+    host: process.env.MYSQL_HOST || "localhost",
+    username: process.env.MYSQL_USER || "root",
+    password: process.env.MYSQL_PASSWORD || "",
+    database: process.env.MYSQL_NAME || "test",
+    port: parseInt(process.env.MYSQL_PORT || "3306"),
+  },
+  postgres: {
+    dialect: "postgres",
+    host: process.env.POSTGRES_HOST || "localhost",
+    username: process.env.POSTGRES_USER || "postgres",
+    password: process.env.POSTGRES_PASSWORD || "",
+    database: process.env.POSTGRES_NAME || "test",
+    port: parseInt(process.env.POSTGRES_PORT || "5432"),
+  },
+  mssql: {
+    dialect: "mssql",
+    host: process.env.MSSQL_HOST || "localhost",
+    username: process.env.MSSQL_USER || "sa",
+    password: process.env.MSSQL_PASSWORD || "",
+    database: process.env.MSSQL_NAME || "test",
+    port: parseInt(process.env.MSSQL_PORT || "1433"),
+    dialectOptions: {
+      options: {
+        encrypt: false, // true si usas Azure o SSL
+        trustServerCertificate: true, // evita errores de certificado en desarrollo
+      },
+    },
+  },
+  oracle: {
+    dialect: "oracle",
+    host: process.env.ORACLE_HOST || "localhost",
+    username: process.env.ORACLE_USER || "system",
+    password: process.env.ORACLE_PASSWORD || "",
+    database: process.env.ORACLE_NAME || "xe",
+    port: parseInt(process.env.ORACLE_PORT || "1521"),
+    dialectOptions: {
+      connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_NAME}`,
+    },
+  },
+};
+
+const selectedEngine = process.env.DB_ENGINE?.toLowerCase() || "mysql";
+const selectedConfig = dbConfigurations[selectedEngine];
+
+if (!selectedConfig) {
+  throw new Error(`❌ Motor de base de datos no soportado: ${selectedEngine}`);
+}
+
+console.log(`🔌 Conectando a base de datos: ${selectedEngine.toUpperCase()}`);
+
 export const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  dbConfig
+  selectedConfig.database,
+  selectedConfig.username,
+  selectedConfig.password,
+  {
+    host: selectedConfig.host,
+    port: selectedConfig.port,
+    dialect: selectedConfig.dialect as any,
+    logging: process.env.NODE_ENV === "development" ? console.log : false,
+    dialectOptions: selectedConfig.dialectOptions || {},
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
 );
 
+export const getDatabaseInfo = () => {
+  return {
+    engine: selectedEngine,
+    config: selectedConfig,
+    connectionString: `${selectedConfig.dialect}://${selectedConfig.username}@${selectedConfig.host}:${selectedConfig.port}/${selectedConfig.database}`,
+  };
+};
+
+export const testConnection = async (): Promise<boolean> => {
+  try {
+    await sequelize.authenticate();
+    console.log(`✅ Conexión exitosa a ${selectedEngine.toUpperCase()}`);
+    return true;
+  } catch (error) {
+    console.error(`❌ Error de conexión a ${selectedEngine.toUpperCase()}:`, error);
+    return false;
+  }
+};

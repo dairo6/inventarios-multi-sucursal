@@ -1,5 +1,105 @@
 //product.http
 
-@token = tu_token_here
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
 
-GET https://localhost:3000/api/productos
+@baseUrl = http://localhost:3000
+
+
+### get all products
+GET {{baseUrl}}/productos
+
+
+### get product by ID
+GET {{baseUrl}}/productos/1
+
+
+### create a new product
+POST {{baseUrl}}/productos
+Content-Type: application/json
+
+{
+  "name": "Producto de prueba",
+  "code": "PRD001",
+  "description": "Descripción del producto de prueba",
+  "price": 100.0,
+  "stock": 50,
+  "unit": "unidad",
+  "category_id": 3,
+  "supplier_id": 2,
+  "is_active": "ACTIVE"
+} 
+
+### update a product by ID
+PATCH {{baseUrl}}/productos/61
+Content-Type: application/json
+
+{
+  "name": "Producto de prueba actualizado",
+  "code": "PRD001",
+  "description": "Descripción del producto de prueba",
+  "price": 6000.0,
+  "stock": 50,
+  "unit": "unidad",
+  "category_id": 3,
+  "supplier_id": 2,
+  "is_active": "ACTIVE"
+} 
+
+### delete a product by ID
+DELETE {{baseUrl}}/productos/60
+
+
+### delete a product by ID (logical)
+DELETE {{baseUrl}}/productos/8/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all products (with auth)
+GET {{baseUrl}}/api/productos
+Authorization: Bearer {{token}}
+
+### get product by ID (with auth)
+GET {{baseUrl}}/api/productos/1
+Authorization: Bearer {{token}}
+
+### create a new product (with auth)
+POST {{baseUrl}}/api/productos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Producto de prueba",
+  "code": "PRD001",
+  "description": "Descripción del producto de prueba",
+  "price": 100.0,
+  "stock": 50,
+  "unit": "unidad",
+  "category_id": 3,
+  "supplier_id": 2,
+  "is_active": "ACTIVE"
+}
+
+### update a product by ID (with auth)
+PATCH {{baseUrl}}/api/productos/61
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Producto de prueba actualizado",
+  "code": "PRD001",
+  "description": "Descripción del producto de prueba",
+  "price": 6000.0,
+  "stock": 50,
+  "unit": "unidad",
+  "category_id": 3,
+  "supplier_id": 2,
+  "is_active": "ACTIVE"
+}
+
+### delete a product by ID (with auth)
+DELETE {{baseUrl}}/api/productos/60 
+Authorization: Bearer {{token}}
+
+### delete a product by ID (logical) (with auth)
+DELETE {{baseUrl}}/api/productos/8/logic
+Authorization: Bearer {{token}}

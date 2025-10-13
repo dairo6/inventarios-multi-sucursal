@@ -8,7 +8,7 @@ export class LotController {
     try {
       const lots: LotI[] = await Lot.findAll({
         where: { status: "AVAILABLE" },
-        include: [{ model: Product, as: "product" }],
+        include: [{ model: Product }],
       });
       res.status(200).json({ lots });
     } catch (error) {
@@ -21,8 +21,8 @@ export class LotController {
     try {
       const { id: pk } = req.params;
       const lot = await Lot.findOne({
-        where: { id: pk, status: "AVAILABLE" },
-        include: [{ model: Product, as: "product" }],
+        where: { id: pk},
+        include: [{ model: Product}],
       });
 
       if (lot) {

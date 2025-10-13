@@ -1,0 +1,94 @@
+//guarantee.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### get all guarantees
+GET {{baseUrl}}/garantias
+
+
+### get guarantee by ID
+GET {{baseUrl}}/garantias/39
+
+
+### create a new guarantee
+POST {{baseUrl}}/garantias
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "description": "Garantia de prueba",
+  "durationMonths": 20,
+  "terms": "Condiciones de prueba",
+  "is_active": "ACTIVE"
+} 
+
+### update a guarantee by ID
+PATCH {{baseUrl}}/garantias/40
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "description": "Garantia 40 de prueba editada",
+  "durationMonths": 11,
+  "terms": "Condiciones 2 de prueba editadas",
+  "is_active": "ACTIVE"
+
+  //only applies if the product belongs to that guarantee
+} 
+
+### delete a guarantee by ID
+DELETE {{baseUrl}}/garantias/2
+
+
+### delete a guarantee by ID (logical)
+DELETE {{baseUrl}}/garantias/6/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all guarantees with auth
+GET {{baseUrl}}/api/garantias
+Authorization: Bearer {{token}}
+
+### get guarantee by ID with auth
+GET {{baseUrl}}/api/garantias/39
+Authorization: Bearer {{token}}
+
+### create a new guarantee with auth
+POST {{baseUrl}}/api/garantias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "product_id": 2,
+  "description": "Garantia de prueba",
+  "durationMonths": 20,
+  "terms": "Condiciones de prueba",
+  "is_active": "ACTIVE"
+}
+
+### update a guarantee by ID with auth
+PATCH {{baseUrl}}/api/garantias/40
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "product_id": 2,
+  "description": "Garantia 40 de prueba editada",
+  "durationMonths": 11,
+  "terms": "Condiciones 2 de prueba editadas",
+  "is_active": "ACTIVE"
+
+  //only applies if the product belongs to that guarantee
+}
+
+### delete a guarantee by ID with auth
+DELETE {{baseUrl}}/api/garantias/2
+Authorization: Bearer {{token}}
+
+### delete a guarantee by ID (logical) with auth
+DELETE {{baseUrl}}/api/garantias/6/logic  
+Authorization: Bearer {{token}}
+

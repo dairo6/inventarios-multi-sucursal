@@ -1,0 +1,98 @@
+//supplier.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### get all suppliers
+GET {{baseUrl}}/proveedores
+
+
+### get a supplier by ID
+GET {{baseUrl}}/proveedores/1
+
+
+### create a new supplier
+POST {{baseUrl}}/proveedores
+Content-Type: application/json
+
+{
+  "name": "Farmacia La Bendición",
+  "taxId": "5623474327-9",
+  "contactName": "Dairo Lemus Cornejo",
+  "phone": "942580324",
+  "email": "Dairo@gmail.com",
+  "address": "Av. Los Angeles 123",
+  "status": "ACTIVE"
+} 
+
+### update a supplier by ID
+PATCH {{baseUrl}}/proveedores/62
+Content-Type: application/json
+
+{
+  "name": "Naranjera La Bendición",
+  "taxId": "5623474327-9",
+  "contactName": "Dairo Arcia Cornejo",
+  "phone": "942580324",
+  "email": "Dairo@gmail.com",
+  "address": "Av. san Martin 123",
+  "status": "ACTIVE"
+} 
+
+### delete a product by ID
+DELETE {{baseUrl}}/proveedores/59
+
+
+### delete a product by ID (logical)
+DELETE {{baseUrl}}/proveedores/8/logic
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all suppliers with auth
+GET {{baseUrl}}/api/proveedores
+Authorization: Bearer {{token}}
+
+### get a supplier by ID with auth
+GET {{baseUrl}}/api/proveedores/1
+Authorization: Bearer {{token}}
+
+### create a new supplier with auth
+POST {{baseUrl}}/api/proveedores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Farmacia La Bendición",
+  "taxId": "5623474327-9",
+  "contactName": "Dairo Lemus Cornejo",
+  "phone": "942580324",
+  "email": "da@gmail.com",
+  "address": "Av. Los Angeles 123",
+  "status": "ACTIVE"
+}
+
+### update a supplier by ID with auth
+PATCH {{baseUrl}}/api/proveedores/62
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Naranjera La Bendición",
+  "taxId": "5623474327-9",
+  "contactName": "Dairo Arcia Cornejo",
+  "phone": "942580324",
+  "email": "da@gmail.com",
+  "address": "calle 23",
+  "status": "ACTIVE"
+}
+
+### Delete a supplier 
+DELETE {{baseUrl}}/api/proveedores/4
+Authorization: Bearer {{token}}
+
+### Delete a supplier logic
+DELETE {{baseUrl}}/api/proveedores/6/logic
+Authorization: Bearer {{token}}
+

@@ -56,9 +56,9 @@ Supplier.init(
     phone: {
       type: DataTypes.STRING,
       allowNull: true,
-      validate: {
-        len: { args: [7, 15], msg: "Phone must be between 7 and 15 characters" },
-      },
+      // validate: {
+      //   len: { args: [7, 15], msg: "Phone must be between 7 and 15 characters" },
+      // },
     },
     email: {
       type: DataTypes.STRING,

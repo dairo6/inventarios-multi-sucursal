@@ -9,9 +9,9 @@ export class InventoryMovementController {
         try {
             const movements: InventoryMovementI[] = await InventoryMovement.findAll({
                 include: [
-                    { model: Product, as: "product" },
-                    { model: Warehouse, as: "warehouse" }
-                ],
+                { model: Product },
+                { model: Warehouse }
+            ],
             });
             res.status(200).json({ movements });
         } catch (error) {
@@ -26,8 +26,8 @@ export class InventoryMovementController {
             const movement = await InventoryMovement.findOne({
                 where: { id: pk },
                 include: [
-                    { model: Product, as: "product" },
-                    { model: Warehouse, as: "warehouse" }
+                    { model: Product },
+                    { model: Warehouse }
                 ],
             });
 

@@ -4,17 +4,17 @@ import { Product } from "./product";
 
 export interface GuaranteeI {
   id?: number;
-  product_id: number;   // FK al producto
+  product_id?: number; // ✅ opcional (porque no todos los productos tendrán garantía)
   description: string;
   durationMonths: number;
   terms?: string;
   status: "ACTIVE" | "EXPIRED";
-  readonly createdAt: Date;
+  readonly createdAt?: Date;
 }
 
-export class Guarantee extends Model {
+export class Guarantee extends Model implements GuaranteeI {
   public id!: number;
-  public product_id!: number;   // FK al producto
+  public product_id?: number;
   public description!: string;
   public durationMonths!: number;
   public terms?: string;
@@ -31,7 +31,8 @@ Guarantee.init(
     },
     product_id: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
+      allowNull: true, // ✅ opcional
+      unique: true, // ✅ garantiza 1:1 (solo una garantía por producto)
       references: {
         model: Product,
         key: "id",
@@ -64,17 +65,17 @@ Guarantee.init(
     sequelize,
     modelName: "Guarantee",
     tableName: "guarantees",
-    updatedAt: false, // solo createdAt
+    updatedAt: false,
   }
 );
 
-// 🔗 Relaciones
-Product.hasMany(Guarantee, { 
-  foreignKey: "product_id", 
-  sourceKey: "id" 
+// ✅ Relaciones 1:1 opcional
+Product.hasOne(Guarantee, {
+  foreignKey: "product_id",
+  as: "guarantee",
 });
 
-Guarantee.belongsTo(Product, { 
-  foreignKey: "product_id", 
-  targetKey: "id" 
+Guarantee.belongsTo(Product, {
+  foreignKey: "product_id",
+  as: "product",
 });

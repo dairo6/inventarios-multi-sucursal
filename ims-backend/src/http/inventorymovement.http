@@ -1,0 +1,91 @@
+//inventory-movements.http
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImlhdCI6MTc2MDA2MDU1NywiZXhwIjoxNzYwMDYxMTU3fQ.l9kxHGraKffDkcOLHMmaVa12iOQKdrhZHrNnP6wb6dA
+
+@baseUrl = http://localhost:3000
+
+
+### get all inventory movements
+GET {{baseUrl}}/movimientos-inventario
+
+
+### get inventory movement by ID
+GET {{baseUrl}}/movimientos-inventario/1
+
+
+### create a new inventory movement
+POST {{baseUrl}}/movimientos-inventario
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "warehouse_id": 2,
+  "lot_id": 84,
+  "user_id": 1,
+  "movementType": "IN",
+  "quantity": 20,
+  "reference": "venta de prueba"
+} 
+
+### update an inventory movement by ID
+PATCH {{baseUrl}}/movimientos-inventario/200
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "warehouse_id": 2,
+  "lot_id": 84,
+  "user_id": 1,
+  "movementType": "TRANSFER",
+  "quantity": 15,
+  "reference": "venta de prueba actualizada"
+} 
+
+### delete an inventory movement by ID
+DELETE {{baseUrl}}/movimientos-inventario/201
+
+
+### ================== RUTAS CON AUTENTICACIÓN ==================
+
+### get all inventory movements with authentication
+GET {{baseUrl}}/api/movimientos-inventario
+Authorization: Bearer {{token}}
+
+### get inventory movement by ID with authentication
+GET {{baseUrl}}/api/movimientos-inventario/1
+Authorization: Bearer {{token}}
+
+### create a new inventory movement with authentication
+POST {{baseUrl}}/api/movimientos-inventario
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "warehouse_id": 2,
+  "lot_id": 84,
+  "user_id": 1,
+  "movementType": "IN",
+  "quantity": 20,
+  "reference": "venta de prueba"
+}
+
+### update an inventory movement by ID with authentication
+PATCH {{baseUrl}}/api/movimientos-inventario/200
+Authorization: Bearer {{token}}
+Content-Type: application/json  }
+
+{
+  "product_id": 1,
+  "warehouse_id": 2,
+  "lot_id": 84,
+  "user_id": 1,
+  "movementType": "TRANSFER",
+  "quantity": 15,
+  "reference": "venta de prueba actualizada"
+}
+
+### delete an inventory movement by ID with authentication
+DELETE {{baseUrl}}/api/movimientos-inventario/201
+Authorization: Bearer {{token}}
+

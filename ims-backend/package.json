@@ -20,6 +20,7 @@
   },
   "types": "commonjs",
   "dependencies": {
+    "@faker-js/faker": "^10.0.0",
     "@types/morgan": "^1.9.10",
     "@types/sequelize": "^4.28.20",
     "bcryptjs": "^3.0.2",
