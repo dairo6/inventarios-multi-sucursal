@@ -1,18 +1,22 @@
 <main class="min-h-screen flex bg-blue-100">
-  <!-- Aside -->
- <aside 
-  class="h-screen transition-[width] duration-500 ease-in-out overflow-hidden"
-  [ngClass]="{ 'w-64': asideVisible, 'w-0': !asideVisible }">
-  <div class="transition-opacity duration-500 ease-in-out"
-       [ngClass]="{ 'opacity-100': asideVisible, 'opacity-0': !asideVisible }">
-    <app-aside></app-aside>
-  </div>
-</aside>
+
+  <!--  Mostrar ASIDE solo si showLayout es true -->
+  <aside 
+    *ngIf="showLayout"
+    class="h-screen transition-[width] duration-500 ease-in-out overflow-hidden"
+    [ngClass]="{ 'w-64': asideVisible, 'w-0': !asideVisible }">
+    
+    <div class="transition-opacity duration-500 ease-in-out"
+         [ngClass]="{ 'opacity-100': asideVisible, 'opacity-0': !asideVisible }">
+      <app-aside></app-aside>
+    </div>
+  </aside>
+
   <!-- Contenedor principal -->
   <div class="flex-1 flex flex-col">
 
-    <!-- Header -->
-    <header>
+    <!--  Header solo si showLayout -->
+    <header *ngIf="showLayout">
       <app-header (asideToggled)="toggleAside()"></app-header>
     </header>
 
@@ -21,9 +25,10 @@
       <router-outlet></router-outlet>
     </section>
 
-    <!-- Footer -->
-    <footer class="h-15 text-center">
+    <!-- Footer también solo si showLayout -->
+    <footer *ngIf="showLayout" class="h-15 text-center">
       <app-footer></app-footer>
     </footer>
+
   </div>
 </main>

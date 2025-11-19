@@ -1,54 +1,54 @@
-<div class="card bg-blue-50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto">
+<div class="card bg-blue-50 rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
     <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
         Crear Nuevo Lote
     </h2>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
-        <!-- Producto -->
-        <div class="mb-4">
-            <label class="block font-medium text-gray-700 mb-2">Producto</label>
-            <p-select [options]="ProductOptions" formControlName="product_id" placeholder="Seleccione un producto"
-                optionLabel="label" optionValue="value" class="w-full"></p-select>
-        </div>
 
-        <!-- Código -->
-        <div class="mb-4">
-            <label class="block font-medium text-gray-700 mb-2">Código</label>
-            <input pInputText formControlName="code" placeholder="Ingrese el código" class="w-full rounded-md" />
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Producto -->
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700 mb-2">Producto</label>
+                <p-select [options]="ProductOptions" formControlName="product_id" placeholder="Seleccione un producto"
+                    optionLabel="label" optionValue="value" class="w-full"></p-select>
+            </div>
 
-        <!-- Fecha de expiración -->
-        <div class="mb-4">
-            <label class="block font-medium text-gray-700 mb-2">Fecha de expiración</label>
-            <p-datePicker 
-            formControlName="expirationDate" 
-            dateFormat="dd/mm/yy" 
-            placeholder="Seleccione la fecha"
-            showIcon="true"
-                class="w-full"></p-datePicker>
-        </div>
+            <!-- Código -->
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700 mb-2">Código</label>
+                <input pInputText formControlName="code" placeholder="Ingrese el código" class="w-full rounded-md" />
+            </div>
 
-        <!-- Cantidad -->
-        <div class="mb-4">
-            <label class="block font-medium text-gray-700 mb-2">Cantidad</label>
-            <input type="number" pInputText formControlName="quantity" placeholder="Ingrese la cantidad"
-                class="w-full rounded-md" />
-        </div>
+            <!-- Fecha de expiración -->
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700 mb-2">Fecha de expiración</label>
+                <p-datePicker formControlName="expirationDate" dateFormat="dd/mm/yy" placeholder="Seleccione la fecha"
+                    showIcon="true" class="w-full"></p-datePicker>
+            </div>
 
-        <!-- Estado -->
-        <div class="mb-4">
-            <label class="block font-medium text-gray-700 mb-2">Estado</label>
-            <p-select [options]="statusOptions" formControlName="status" placeholder="Seleccione el estado"
-                optionLabel="label" optionValue="value" class="w-full"></p-select>
+            <!-- Cantidad -->
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700 mb-2">Cantidad</label>
+                <input type="number" pInputText formControlName="quantity" placeholder="Ingrese la cantidad"
+                    class="w-full rounded-md" />
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-4">
+                <label class="block font-medium text-gray-700 mb-2">Estado</label>
+                <p-select [options]="statusOptions" formControlName="status" placeholder="Seleccione el estado"
+                    optionLabel="label" optionValue="value" class="w-full"></p-select>
+            </div>
+
         </div>
 
         <!-- Botones -->
         <div class="flex justify-end gap-4 mt-8 w-full">
-      <p-button label="Cancelar" severity="secondary" (click)="cancelar()" [disabled]="loading"></p-button>
-      <button pButton type="submit" class="p-button bg-blue-500 hover:bg-blue-600 text-white" label="Guardar"
-        icon="pi pi-save" [loading]="loading" [disabled]="loading"></button>
-    </div>
-  </form>
+            <p-button label="Cancelar" severity="secondary" (click)="cancelar()" [disabled]="loading"></p-button>
+            <button pButton type="submit" class="p-button bg-blue-500 hover:bg-blue-600 text-white" label="Guardar"
+                icon="pi pi-save" [loading]="loading" [disabled]="loading"></button>
+        </div>
+    </form>
 </div>
 
 <p-toast></p-toast>

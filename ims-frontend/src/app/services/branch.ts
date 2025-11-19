@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { BranchI } from '../models/branch';
+import { AuthService } from './auth';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class BranchService {
 
   constructor(
     private http: HttpClient,
-    // private authService: AuthService
+    private authService: AuthService
   ) {}
 
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
-    // const token = this.authService.getToken();
-    // if (token) {
-    //   headers = headers.set('Authorization', `Bearer ${token}`);
-    // }
+    const token = this.authService.getToken();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
     return headers;
   }
 

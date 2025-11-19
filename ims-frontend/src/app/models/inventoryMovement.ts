@@ -1,8 +1,8 @@
 export interface InventoryMovementI {
   id?: number;
-  product_id: string;
-  warehouse_id: string;    // almacén origen o destino
-  lot_id?: string;        // opcional, para productos con lotes
+  product_id: number;
+  warehouse_id: number;    // almacén origen o destino
+  lot_id?: number;        // opcional, para productos con lotes
   movementType: "IN" | "OUT" | "TRANSFER";
   quantity: number;
   reference?: string;      // ej: factura, devolución

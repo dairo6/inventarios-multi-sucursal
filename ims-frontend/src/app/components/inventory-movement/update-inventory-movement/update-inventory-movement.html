@@ -1,1 +1,141 @@
-<p>update-inventory-movement works!</p>
+<div class="card bg-blue-50 rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+    Editar Movimiento de Inventario
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading">
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+
+        <!-- Producto -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Producto *</label>
+         <p-select
+          [options]="ProductOptions"
+          formControlName="product_id"
+          placeholder="Seleccione el producto"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        ></p-select>
+
+      </div>
+
+      <!-- Almacen -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Almacén *</label>
+         <p-select
+          [options]="WarehouseOptions"
+          formControlName="warehouse_id"
+          placeholder="Seleccione almacén"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        ></p-select>
+
+      </div>
+
+      <!-- Lote -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Lote *</label>
+         <p-select
+          [options]="LotOptions"
+          formControlName="lot_id"
+          placeholder="Seleccione un lote"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        ></p-select>
+
+      </div>
+
+      <!-- Movimiento -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Movimiento *</label>
+         <p-select
+          [options]="MovementOptions"
+          formControlName="movementType"
+          placeholder="Seleccione un tipo de movimiento"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        ></p-select>
+
+      </div>
+
+      <!-- cantidad -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Cantidad *</label>
+        <input
+            type="number"
+            pInputText
+            formControlName="quantity"
+            placeholder="Ej: 100"
+            class="w-full rounded-md"
+            [class.ng-invalid]="form.get('quantity')?.invalid && form.get('quantity')?.touched"
+        />
+        <small class="text-red-500 mt-1" *ngIf="getFieldError('quantity')">
+          {{ getFieldError('quantity') }}
+        </small>
+      </div>
+
+      <!-- Estado -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Estado *</label>
+        <p-select
+          [options]="statusOptions"
+          formControlName="status"
+          placeholder="Seleccione estado"
+          class="w-full"
+        ></p-select>
+      </div>
+
+      <!-- Referencia -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Referencia</label>
+        <textarea
+            pInputTextarea
+            formControlName="reference"
+            placeholder="Ingrese la referencia"
+            class="w-full rounded-md"
+            [class.ng-invalid]="form.get('reference')?.invalid && form.get('reference')?.touched"
+        ></textarea>
+        <small class="text-red-500 mt-1" *ngIf="getFieldError('reference')">
+            {{ getFieldError('reference') }}
+        </small>
+      </div>
+
+    </div>
+
+    <!-- Botones -->
+    <div class="form-actions mt-6 flex justify-end gap-2">
+      <p-button 
+        label="Cancelar" 
+        severity="secondary" 
+        (click)="cancelar()"
+        [disabled]="loading"
+      ></p-button>
+
+      <button
+        pButton
+        type="submit"
+        class="p-button bg-blue-500 hover:bg-blue-600 text-white"
+        label="Actualizar"
+        icon="pi pi-save"
+        [loading]="loading"
+        [disabled]="loading"
+      ></button>
+    </div>
+
+  </form>
+
+  <div class="flex justify-center py-6" *ngIf="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+</div>
+
+<p-toast></p-toast>
+
+
+

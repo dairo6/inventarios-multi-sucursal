@@ -4,7 +4,6 @@
     <!-- Sección izquierda -->
     <ng-template #start>
       <div class="flex items-center gap-4">
-        <!-- Botón toggle aside -->
         <p-button 
           icon="pi pi-bars" 
           (click)="asideToggled.emit()"
@@ -15,22 +14,35 @@
     <!-- Sección derecha -->
     <ng-template #end>
       <div class="flex items-center gap-3">
-        <!-- Notificaciones con badge -->
-        <p-button 
-          icon="pi pi-bell" 
-          badge="3" 
-          badgeClass="!p-badge-danger"
-          styleClass="p-button-rounded p-button-text !text-orange-400 hover:!bg-blue-200">
-        </p-button>
 
-        <!-- Avatar con menú -->
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          class="cursor-pointer border-2 border-orange-400 hover:scale-105 transition" size="large" shape="circle"
-          (click)="menu.toggle($event)" />
+        <!-- 🔔 Notificaciones (solo si está logueado) -->
+        <button 
+          *ngIf="isLoggedIn"
+          type="button" 
+          class="text-orange-500 bg-gray-100 hover:bg-gray-200 rounded shadow hover:shadow-lg flex items-center justify-center w-10 h-10">
+          
+          <p-overlaybadge value="2">
+            <i class="pi pi-bell text-2xl"></i>
+          </p-overlaybadge>
+        </button>
 
-        <!-- Menú emergente -->
-        <p-menu #menu [popup]="true" [model]="userMenuItems"></p-menu>
+        <!-- 👤 Botón de menú del usuario -->
+        <button 
+          type="button"
+          class="text-orange-500 bg-gray-100 hover:bg-gray-200 rounded shadow hover:shadow-lg w-10 h-10 flex items-center justify-center"
+          (click)="userMenu.toggle($event)">
+          <i class="pi pi-users text-xl"></i>
+        </button>
+
+        <!-- Menú emergente del usuario -->
+        <p-tieredmenu 
+          #userMenu 
+          [model]="userMenuItems" 
+          [popup]="true">
+        </p-tieredmenu>
+
       </div>
     </ng-template>
+
   </p-menubar>
 </div>

@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
 
+import { Login } from './components/auth/login/login';
+import { Register } from './components/auth/register/register';
+
+import { AuthGuard } from './guards/authguard';
+
 //Component Product
 import { ListProduct } from './components/product/list-product/list-product';
 import { CreateProduct } from './components/product/create-product/create-product';
@@ -61,79 +66,89 @@ import { CreateGuarantee } from './components/guarantee/create-guarantee/create-
 import { UpdateGuarantee } from './components/guarantee/update-guarantee/update-guarantee';
 import { DeleteGuarantee } from './components/guarantee/delete-guarantee/delete-guarantee';
 
-//Componnet UI
-import { MovementForm } from './components/ui/movement-form/movement-form';
-import { StockGrid } from './components/ui/stock-grid/stock-grid';
 
 
 
 export const routes: Routes = [
 
-    {
-        path: '',
-        redirectTo: '/',
-        pathMatch: 'full'
+    { 
+        path: '', 
+        redirectTo: '/login', 
+        pathMatch: 'full' 
     },
-
+    {
+        path: "login",
+        component: Login
+    },
+    {
+        path: "register",
+        component: Register
+    },
     // Products
-    { path: 'products', component: ListProduct },
-    { path: 'products/create', component: CreateProduct },
-    { path: 'products/update/:id', component: UpdateProduct },
-    { path: 'products/delete/:id', component: DeleteProduct },
+    { path: 'products', component: ListProduct, canActivate: [AuthGuard] },
+    { path: 'products/create', component: CreateProduct, canActivate: [AuthGuard]},
+    { path: 'products/update/:id', component: UpdateProduct, canActivate: [AuthGuard]},
+    { path: 'products/delete/:id', component: DeleteProduct, canActivate: [AuthGuard]},
 
 
     // Categories
-    { path: 'categories', component: ListCategory },
-    { path: 'categories/create', component: CreateCategory },
-    { path: 'categories/update/:id', component: UpdateCategory },
-    { path: 'categories/delete/:id', component: DeleteCategory },
+    { path: 'categories', component: ListCategory, canActivate: [AuthGuard]},
+    { path: 'categories/create', component: CreateCategory, canActivate: [AuthGuard]},
+    { path: 'categories/update/:id', component: UpdateCategory, canActivate: [AuthGuard]},
+    { path: 'categories/delete/:id', component: DeleteCategory, canActivate: [AuthGuard]},
 
     // Suppliers
-    { path: 'suppliers', component: ListSupplier },
-    { path: 'suppliers/create', component: CreateSupplier },
-    { path: 'suppliers/update/:id', component: UpdateSupplier },
-    { path: 'suppliers/delete/:id', component: DeleteSupplier },
+    { path: 'suppliers', component: ListSupplier, canActivate: [AuthGuard]},
+    { path: 'suppliers/create', component: CreateSupplier, canActivate: [AuthGuard]},
+    { path: 'suppliers/update/:id', component: UpdateSupplier, canActivate: [AuthGuard]},
+    { path: 'suppliers/delete/:id', component: DeleteSupplier, canActivate: [AuthGuard]},
 
     // Branches
-    { path: 'branches', component: ListBranch },
-    { path: 'branches/create', component: CreateBranch },
-    { path: 'branches/update/:id', component: UpdateBranch },
-    { path: 'branches/delete/:id', component: DeleteBranch },
+    { path: 'branches', component: ListBranch, canActivate: [AuthGuard] },
+    { path: 'branches/create', component: CreateBranch, canActivate: [AuthGuard] },
+    { path: 'branches/update/:id', component: UpdateBranch, canActivate: [AuthGuard] },
+    { path: 'branches/delete/:id', component: DeleteBranch, canActivate: [AuthGuard] },
 
     // Stock by Branch
-    { path: 'stock-branches', component: ListStockBranch },
-    { path: 'stock-branches/create', component: CreateStockBranch },
-    { path: 'stock-branches/update/:id', component: UpdateStockBranch },
-    { path: 'stock-branches/delete/:id', component: DeleteStockBranch },
+    { path: 'stock-branches', component: ListStockBranch, canActivate: [AuthGuard] },
+    { path: 'stock-branches/create', component: CreateStockBranch, canActivate: [AuthGuard] },
+    { path: 'stock-branches/update/:id', component: UpdateStockBranch, canActivate: [AuthGuard] },
+    { path: 'stock-branches/delete/:id', component: DeleteStockBranch, canActivate: [AuthGuard] },
 
     // Inventory Movements (NO delete)
-    { path: 'inventory-movements', component: ShowInventoryMovement },
-    { path: 'inventory-movements/create', component: CreateInventoryMovement },
-    { path: 'inventory-movements/update/:id', component: UpdateInventoryMovement },
+    { path: 'inventory-movements', component: ShowInventoryMovement, canActivate: [AuthGuard] },
+    { path: 'inventory-movements/create', component: CreateInventoryMovement, canActivate: [AuthGuard] },
+    { path: 'inventory-movements/update/:id', component: UpdateInventoryMovement, canActivate: [AuthGuard] },
 
     // Warehouses
-    { path: 'warehouses', component: ListWarehouse },
-    { path: 'warehouses/create', component: CreateWarehouse },
-    { path: 'warehouses/update/:id', component: UpdateWarehouse },
-    { path: 'warehouses/delete/:id', component: DeleteWarehouse },
+    { path: 'warehouses', component: ListWarehouse, canActivate: [AuthGuard] },
+    { path: 'warehouses/create', component: CreateWarehouse, canActivate: [AuthGuard] },
+    { path: 'warehouses/update/:id', component: UpdateWarehouse, canActivate: [AuthGuard] },
+    { path: 'warehouses/delete/:id', component: DeleteWarehouse, canActivate: [AuthGuard] },
 
     // Locations
-    { path: 'locations', component: ListLocation },
-    { path: 'locations/create', component: CreateLocation },
-    { path: 'locations/update/:id', component: UpdateLocation },
-    { path: 'locations/delete/:id', component: DeleteLocation },
+    { path: 'locations', component: ListLocation, canActivate: [AuthGuard] },
+    { path: 'locations/create', component: CreateLocation, canActivate: [AuthGuard] },
+    { path: 'locations/update/:id', component: UpdateLocation, canActivate: [AuthGuard] },
+    { path: 'locations/delete/:id', component: DeleteLocation, canActivate: [AuthGuard] },
 
     // Guarantees
-    { path: 'guarantees', component: ListGuarantee },
-    { path: 'guarantees/create', component: CreateGuarantee },
-    { path: 'guarantees/update/:id', component: UpdateGuarantee },
-    { path: 'guarantees/delete/:id', component: DeleteGuarantee },
+    { path: 'guarantees', component: ListGuarantee, canActivate: [AuthGuard] },
+    { path: 'guarantees/create', component: CreateGuarantee, canActivate: [AuthGuard] },
+    { path: 'guarantees/update/:id', component: UpdateGuarantee, canActivate: [AuthGuard] },
+    { path: 'guarantees/delete/:id', component: DeleteGuarantee, canActivate: [AuthGuard] },
 
     // Lots
-    { path: 'lots', component: ListLot },
-    { path: 'lots/create', component: CreateLot },
-    { path: 'lots/update/:id', component: UpdateLot },
-    { path: 'lots/delete/:id', component: DeleteLot },
+    { path: 'lots', component: ListLot, canActivate: [AuthGuard] },
+    { path: 'lots/create', component: CreateLot, canActivate: [AuthGuard] },
+    { path: 'lots/update/:id', component: UpdateLot, canActivate: [AuthGuard] },
+    { path: 'lots/delete/:id', component: DeleteLot, canActivate: [AuthGuard] },
+
+    {
+        path: "**",
+        redirectTo: "login",
+        pathMatch: "full"
+    }
 
     // UI
     
