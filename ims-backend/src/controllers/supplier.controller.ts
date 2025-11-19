@@ -8,7 +8,7 @@ export class SupplierController {
       const suppliers: SupplierI[] = await Supplier.findAll({
         where: { status: "ACTIVE" },
       });
-      res.status(200).json({ suppliers });
+      res.status(200).json(suppliers);
     } catch (error) {
       res.status(500).json({ error: "Error fetching suppliers" });
     }

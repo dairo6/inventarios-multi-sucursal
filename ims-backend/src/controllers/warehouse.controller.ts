@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Warehouse, WarehouseI } from "../models/warehouse";
+import { Branch } from "../models/branch";
 
 export class WarehouseController {
   // ✅ Obtener todos los almacenes activos
@@ -7,8 +8,11 @@ export class WarehouseController {
     try {
       const warehouses: WarehouseI[] = await Warehouse.findAll({
         where: { status: "ACTIVE" },
+        include: [
+          { model: Branch, as: "branch" }
+        ]
       });
-      res.status(200).json({ warehouses });
+      res.status(200).json( warehouses );
     } catch (error) {
       res.status(500).json({ error: "Error fetching warehouses" });
     }

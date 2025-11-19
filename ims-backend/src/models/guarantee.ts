@@ -72,10 +72,12 @@ Guarantee.init(
 // ✅ Relaciones 1:1 opcional
 Product.hasOne(Guarantee, {
   foreignKey: "product_id",
+  sourceKey: "id",
   as: "guarantee",
 });
 
 Guarantee.belongsTo(Product, {
   foreignKey: "product_id",
+  targetKey: "id",
   as: "product",
 });

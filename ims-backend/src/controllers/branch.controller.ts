@@ -8,7 +8,7 @@ export class BranchController {
       const branches: BranchI[] = await Branch.findAll({
         where: { status: "ACTIVE" },
       });
-      res.status(200).json({ branches });
+      res.status(200).json(branches); //cambiar 
     } catch (error) {
       res.status(500).json({ error: "Error fetching branches" });
     }

@@ -2,19 +2,19 @@ import { Request, Response } from "express";
 import { Category, CategoryI } from "../models/category";
 
 export class CategoryController {
-  // ✅ Obtener todas las categories activas
+  // Obtener todas las categories activas
   public async getAllCategories(req: Request, res: Response) {
     try {
       const categories: CategoryI[] = await Category.findAll({
         where: { status: "ACTIVE" },
       });
-      res.status(200).json({ categories });
+      res.status(200).json( categories );
     } catch (error) {
       res.status(500).json({ error: "Error fetching categories" });
     }
   }
 
-  // ✅ Get a category by ID
+  //  Get a category by ID
   public async getCategoryById(req: Request, res: Response) {
     try {
       const { id: pk } = req.params;
@@ -32,7 +32,7 @@ export class CategoryController {
     }
   }
 
-  // ✅ Create a new category
+  // Create a new category
   public async createCategory(req: Request, res: Response) {
     const { name, description, status } = req.body;
 
@@ -50,7 +50,7 @@ export class CategoryController {
     }
   }
 
-  // ✅ Update a category
+  //  Update a category
   public async updateCategory(req: Request, res: Response) {
     const { id: pk } = req.params;
     const { name, description, status } = req.body;
@@ -77,7 +77,7 @@ export class CategoryController {
     }
   }
 
-  // ✅ Eliminación física
+  //  Eliminación física
   public async deleteCategory(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -94,7 +94,7 @@ export class CategoryController {
     }
   }
 
-  // ✅ Eliminación lógica (status → INACTIVE)
+  //  Eliminación lógica (status → INACTIVE)
   public async deleteCategoryAdv(req: Request, res: Response) {
     try {
       const { id: pk } = req.params;

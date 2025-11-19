@@ -81,9 +81,11 @@ Warehouse.init(
 Branch.hasMany(Warehouse, {
   foreignKey: "branch_id",
   sourceKey: "id",
+  as: "warehouses",
 });
 
 Warehouse.belongsTo(Branch, {
   foreignKey: "branch_id",
   targetKey: "id",
+  as: "branch",
 });

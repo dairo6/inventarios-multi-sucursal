@@ -10,11 +10,11 @@ export class StockBranchController {
       const stockBranches: StockBranchI[] = await StockBranch.findAll({
         where: { status: "ACTIVE" },
         include: [
-          { model: Product },
-          { model: Branch},
+          { model: Product, as: 'product' },
+          { model: Branch, as: 'branch' },
         ],
       });
-      res.status(200).json({ stockBranches });
+      res.status(200).json( stockBranches );
     } catch (error) {
       res.status(500).json({ error: "Error fetching stock branches" });
     }
@@ -26,10 +26,6 @@ export class StockBranchController {
       const { id: pk } = req.params;
       const stockBranch = await StockBranch.findOne({
         where: { id: pk, status: "ACTIVE" },
-        include: [
-          { model: Product},
-          { model: Branch },
-        ],
       });
 
       if (stockBranch) {

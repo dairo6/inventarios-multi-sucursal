@@ -1,6 +1,6 @@
 //branch.http
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzYwMzI3NDU1LCJleHAiOjE3NjAzMjgwNTV9.rPghKz0EKKixc5k5YokoPQ5LazIYjG7ekWRuSjeIprs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzYwNTU5Mjc5LCJleHAiOjE3NjA1NjA0Nzl9.8IpvzY4yy_Y5_YeGRBqWTZMT4h_mxJ3ASA6ZNwGXOJ4
 
 @baseUrl = http://localhost:3000
 
@@ -53,7 +53,7 @@ GET {{baseUrl}}/api/sucursales
 Authorization: Bearer {{token}}
 
 ### Get branch by ID (with auth)
-GET {{baseUrl}}/api/sucursales/3
+GET {{baseUrl}}/api/sucursales/9
 Authorization: Bearer {{token}} 
 
 ### Create a new branch (with auth)
@@ -62,34 +62,34 @@ Authorization: Bearer {{token}}
 Content-Type: application/json  
 
 {
-  "name": "sucursal de prueba con auth",
-  "code": "SUC003",
-  "address": "Calle 123 #45-67",
+  "name": "sucursal usuario 2",
+  "code": "sucprueba002",
+  "address": "Calle 7 #45-67",
   "phone": "1234567890",
-  "email": "dsr@gmail.com",
+  "email": "pruebas02@gmail.com",
   "is_active": "ACTIVE"
 }
 
 ### update a branch by ID (with auth)
-PATCH {{baseUrl}}/api/sucursales/1
+PATCH {{baseUrl}}/api/sucursales/69
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "sucursal de prueba editada con auth",
-  "code": "SUC02",
-  "address": "Calle 123 #45-634",
+  "name": "sucursal de prueba editada 69",
+  "code": "suc69",
+  "address": "Calle 1 #45-634",
   "phone": "1234243450",
-  "email": "dam@hotmail.com",
+  "email": "damsss@hotmail.com",
   "is_active": "ACTIVE"
 }
 
 ### Delete a branch by ID (with auth)
-DELETE {{baseUrl}}/api/sucursales/2
+DELETE {{baseUrl}}/api/sucursales/68
 Authorization: Bearer {{token}}
 
 ### Delete a branch by ID (logical) (with auth)
-DELETE {{baseUrl}}/api/sucursales/6/logic
+DELETE {{baseUrl}}/api/sucursales/67/logic
 Authorization: Bearer {{token}}
 
 

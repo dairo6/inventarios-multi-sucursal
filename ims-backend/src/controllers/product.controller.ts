@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { Product, ProductI } from "../models/product";
+import { Category } from "../models/category";
+import { Supplier } from "../models/supplier";
+
 
 export class ProductController {
   // Get all with status "ACTIVE"
@@ -7,8 +10,12 @@ export class ProductController {
     try {
       const products: ProductI[] = await Product.findAll({
         where: { status: 'ACTIVE' },
+         include: [
+        { model: Category, as: "category" },
+        { model: Supplier, as: "supplier" }
+      ]
       });
-      res.status(200).json({ products });
+      res.status(200).json(products);
     } catch (error) {
       res.status(500).json({ error: "Error fetching product" });
     }

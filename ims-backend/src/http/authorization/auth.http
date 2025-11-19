@@ -22,8 +22,11 @@ POST {{baseUrl}}/api/login
 Content-Type: application/json
 
 {
-  "email": "darcia@uniguajira.edu.co",
+  "email": "dar@uniguajira.edu.co",
   "password": "12345678"
 }
+
+
+
 
 ### ================== RUTAS CON AUTENTICACIÓN ==================

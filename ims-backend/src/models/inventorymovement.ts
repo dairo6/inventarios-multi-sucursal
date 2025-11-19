@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../database/connection";
-//import { User } from "./user";
 import { Product } from "./product";
 import { Warehouse } from "./warehouse";
 import { Lot } from "./lot";
@@ -14,7 +13,7 @@ export interface InventoryMovementI {
   quantity: number;
   reference?: string;
   createdAt?: Date;
-  user_id: number;
+  status?: "ACTIVE" | "INACTIVE";
 }
 
 export class InventoryMovement extends Model {
@@ -26,7 +25,8 @@ export class InventoryMovement extends Model {
   public quantity!: number;
   public reference?: string;
   public createdAt!: Date;
-  public user_id!: number;
+  public status!: "ACTIVE" | "INACTIVE";
+  
 }
 
 InventoryMovement.init(
@@ -48,22 +48,28 @@ InventoryMovement.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,
     },
-    user_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-    },
+
     movementType: {
       type: DataTypes.ENUM("IN", "OUT", "TRANSFER"),
       allowNull: false,
     },
+
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+
     reference: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+
+    status: {
+      type: DataTypes.ENUM("ACTIVE", "INACTIVE"),
+      defaultValue: "ACTIVE",
+      allowNull: false
+    },
+
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
@@ -77,6 +83,7 @@ InventoryMovement.init(
   }
 );
 
+
 //
 // 🔗 Relaciones
 //
@@ -85,38 +92,35 @@ InventoryMovement.init(
 Product.hasMany(InventoryMovement, {
   foreignKey: "product_id",
   sourceKey: "id",
+  as: "movements",
 });
 InventoryMovement.belongsTo(Product, {
   foreignKey: "product_id",
   targetKey: "id",
+  as: "product",
 });
 
 // Un almacén puede tener muchos movimientos
 Warehouse.hasMany(InventoryMovement, {
   foreignKey: "warehouse_id",
   sourceKey: "id",
+  as: "movements",
 });
 InventoryMovement.belongsTo(Warehouse, {
   foreignKey: "warehouse_id",
   targetKey: "id",
+  as: "warehouse",
 });
 
 // Un lote puede tener varios movimientos (opcional)
 Lot.hasMany(InventoryMovement, {
   foreignKey: "lot_id",
   sourceKey: "id",
+  as: "movements",
 });
 InventoryMovement.belongsTo(Lot, {
   foreignKey: "lot_id",
   targetKey: "id",
+  as: "lot",
 });
 
-// Un usuario puede registrar muchos movimientos
-/*User.hasMany(InventoryMovement, {
-  foreignKey: "user_id",
-  sourceKey: "id",
-});
-InventoryMovement.belongsTo(User, {
-  foreignKey: "user_id",
-  targetKey: "id",
-});*/

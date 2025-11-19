@@ -1,13 +1,18 @@
 import { Request, Response } from "express";
 import { Location, LocationI } from "../models/location";
+import { Warehouse } from "../models/warehouse";
 import { Op } from "sequelize";
 export class LocationController {
   // get all locations with status "ACTIVE"
   public async getAllLocations(req: Request, res: Response) {
     try {
       const locations: LocationI[] = await Location.findAll({
+        where: { 
+        status: { [Op.in]: ["AVAILABLE", "OCCUPIED"] }
+      },
+        include: [{ model: Warehouse, as: "warehouse" }],
       });
-      res.status(200).json({ locations });
+      res.status(200).json(locations);
     } catch (error) {
       res.status(500).json({ error: "Error fetching locations" });
     }
@@ -95,7 +100,7 @@ export class LocationController {
     }
   }
 
-  // Delete a location logically (set status to "INACTIVE")
+  // Delete a location logically (set status to "Block")
   public async deleteLocationAdv(req: Request, res: Response) {
   try {
     const { id: pk } = req.params;

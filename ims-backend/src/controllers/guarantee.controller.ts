@@ -10,7 +10,7 @@ export class GuaranteeController {
         where: { status: "ACTIVE" },
         include: [{ model: Product, as: "product" }],
       });
-      res.status(200).json({ guarantees });
+      res.status(200).json(guarantees);
     } catch (error) {
       res.status(500).json({ error: "Error fetching guarantees" });
     }

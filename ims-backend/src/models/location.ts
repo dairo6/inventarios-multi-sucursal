@@ -56,9 +56,11 @@ Location.init(
 Warehouse.hasMany(Location, {
   foreignKey: "warehouse_id",
   sourceKey: "id",
+  as: "location"
 });
 
 Location.belongsTo(Warehouse, {
   foreignKey: "warehouse_id",
   targetKey: "id",
+  as: "warehouse"
 });

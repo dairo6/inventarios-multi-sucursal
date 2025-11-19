@@ -69,10 +69,12 @@ Lot.init(
 // 🔗 Relaciones
 Lot.belongsTo(Product, { 
   foreignKey: "product_id", 
-  targetKey: "id" 
+  targetKey: "id",
+  as: "product" 
 });
 
 Product.hasMany(Lot, { 
   foreignKey: "product_id", 
   sourceKey: "id", 
+  as: "lots"
 });

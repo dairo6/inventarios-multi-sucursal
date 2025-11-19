@@ -89,19 +89,23 @@ StockBranch.init(
 Branch.hasMany(StockBranch, {
   foreignKey: "branch_id",
   sourceKey: "id",
+  as: "stockBranches",
 });
 
 StockBranch.belongsTo(Branch, {
   foreignKey: "branch_id",
   targetKey: "id",
+  as: "branch",
 });
 
 Product.hasMany(StockBranch, {
   foreignKey: "product_id",
   sourceKey: "id",
+  as: "stockBranches",
 });
 
 StockBranch.belongsTo(Product, {
   foreignKey: "product_id",
   targetKey: "id",
+  as: "product",
 });

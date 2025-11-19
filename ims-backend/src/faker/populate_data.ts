@@ -183,20 +183,22 @@ async function createFakeData() {
     // 🔹 Create inventory movements
     for (let i = 0; i < 200; i++) {
         const randomProduct = faker.helpers.arrayElement(createdProducts);
-        const randomwarehouse = faker.helpers.arrayElement(createdWarehouses);
+        const randomWarehouse = faker.helpers.arrayElement(createdWarehouses);
         const randomLot = faker.helpers.arrayElement(createdLots);
 
         await InventoryMovement.create({
             product_id: randomProduct.id,
-            warehouse_id: randomwarehouse.id,
+            warehouse_id: randomWarehouse.id,
             lot_id: randomLot.id,
             movementType: faker.helpers.arrayElement(["IN", "OUT", "TRANSFER"]),
             quantity: faker.number.int({ min: 1, max: 20 }),
             reference: faker.lorem.sentence(),
-            createdAt: faker.date.recent(),
-            user_id: faker.company.name().length, // Simulación de user_id
+
+            // Nuevo campo obligatorio
+            status: "ACTIVE",
         });
     }
+
 
 }
 

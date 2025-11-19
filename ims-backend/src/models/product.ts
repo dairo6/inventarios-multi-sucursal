@@ -114,19 +114,23 @@ Product.init(
 Category.hasMany(Product, {
   foreignKey: "category_id",
   sourceKey: "id",
+  as: "products"
 });
 
 Product.belongsTo(Category, {
   foreignKey: "category_id",
   targetKey: "id",
+  as: "category"
 });
 
 Supplier.hasMany(Product, {
   foreignKey: "supplier_id",
   sourceKey: "id",
+  as: "products"
 });
 
 Product.belongsTo(Supplier, {
   foreignKey: "supplier_id",
   targetKey: "id",
+  as: "supplier"
 });

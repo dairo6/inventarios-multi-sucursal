@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { InventoryMovement, InventoryMovementI } from "../models/inventorymovement";
 import { Product } from "../models/product";
 import { Warehouse } from "../models/warehouse";
+import { Lot } from "../models/lot";
 
 export class InventoryMovementController {
     // Get all inventory movements
@@ -9,11 +10,12 @@ export class InventoryMovementController {
         try {
             const movements: InventoryMovementI[] = await InventoryMovement.findAll({
                 include: [
-                { model: Product },
-                { model: Warehouse }
-            ],
+                    { model: Product, as: "product" },
+                    { model: Warehouse, as: "warehouse" },
+                    { model: Lot, as: "lot" },
+                ],
             });
-            res.status(200).json({ movements });
+            res.status(200).json(movements);
         } catch (error) {
             res.status(500).json({ error: "Error fetching inventory movements" });
         }
@@ -25,10 +27,6 @@ export class InventoryMovementController {
             const { id: pk } = req.params;
             const movement = await InventoryMovement.findOne({
                 where: { id: pk },
-                include: [
-                    { model: Product },
-                    { model: Warehouse }
-                ],
             });
 
             if (movement) {
@@ -43,31 +41,30 @@ export class InventoryMovementController {
 
     // Create a new inventory movement
     public async createMovement(req: Request, res: Response) {
-        const { product_id, warehouse_id, lot_id, movementType, quantity, reference, user_id } = req.body;
+        const { product_id, warehouse_id, lot_id, movementType, quantity, reference } = req.body;
 
         try {
-            const body: InventoryMovementI = {
+            const newMovement = await InventoryMovement.create({
                 product_id,
                 warehouse_id,
                 lot_id,
                 movementType,
                 quantity,
                 reference,
-                user_id,
-                createdAt: new Date(),
-            };
+            });
 
-            const newMovement = await InventoryMovement.create({ ...body });
             res.status(201).json(newMovement);
+
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     }
 
+
     // Update an inventory movement
     public async updateMovement(req: Request, res: Response) {
         const { id: pk } = req.params;
-        const { product_id, warehouse_id, lot_id, movementType, quantity, reference, user_id } = req.body;
+        const { product_id, warehouse_id, lot_id, movementType, quantity, reference } = req.body;
 
         try {
             const movementExist = await InventoryMovement.findOne({ where: { id: pk } });
@@ -80,7 +77,6 @@ export class InventoryMovementController {
                     movementType,
                     quantity,
                     reference,
-                    user_id,
                 });
                 res.status(200).json(movementExist);
             } else {
@@ -112,19 +108,27 @@ export class InventoryMovementController {
     public async deleteInventoryMovementAdv(req: Request, res: Response) {
         try {
             const { id: pk } = req.params;
-            const inventorymovementToUpdate = await InventoryMovement.findOne({
+
+            const movement = await InventoryMovement.findOne({
                 where: { id: pk, status: "ACTIVE" },
             });
 
-            if (inventorymovementToUpdate) {
-                await inventorymovementToUpdate.update({ status: "INACTIVE" });
-                res.status(200).json(inventorymovementToUpdate);
-            } else {
-                res.status(404).json({ error: "Inventory movement not found or already inactive" });
+            if (!movement) {
+                return res.status(404).json({
+                    error: "Inventory movement not found or already inactive"
+                });
             }
+
+            await movement.update({ status: "INACTIVE" });
+
+            res.status(200).json({
+                message: "Inventory movement deactivated successfully",
+                movement
+            });
+
         } catch (error) {
             res.status(500).json({ error: "Error deactivating inventory movement" });
         }
-
     }
+
 }

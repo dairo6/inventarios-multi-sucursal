@@ -16,8 +16,8 @@ POST {{baseUrl}}/api/roleUsers
 Content-Type: application/json
 
 {
-  "role_id": 1,
-  "user_id": 1,
+  "role_id": 2,
+  "user_id": 2,
   "is_active": "ACTIVE"
 }
 
@@ -32,7 +32,7 @@ Content-Type: application/json
 }
 
 ### Eliminar un rol de usuario físicamente
-DELETE {{baseUrl}}/api/roleUsers/1
+DELETE {{baseUrl}}/api/roleUsers/4
 
 ### Eliminar un rol de usuario lógicamente
 DELETE {{baseUrl}}/api/roleUsers/1/logic

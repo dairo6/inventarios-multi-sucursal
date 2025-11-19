@@ -1,28 +1,33 @@
 import { Request, Response } from "express";
 import { Lot, LotI } from "../models/lot";
 import { Product } from "../models/product";
+import { Op } from "sequelize";
 
 export class LotController {
-  // get all lots with status "AVAILABLE"
+
+  // Get all lots with status AVAILABLE or EXPIRED
   public async getAllLots(req: Request, res: Response) {
     try {
       const lots: LotI[] = await Lot.findAll({
-        where: { status: "AVAILABLE" },
-        include: [{ model: Product }],
+        where: {
+          status: { [Op.or]: ["AVAILABLE", "EXPIRED"] }  
+        },
+        include: [{ model: Product, as: "product" }],
       });
-      res.status(200).json({ lots });
+
+      res.status(200).json(lots);
     } catch (error) {
       res.status(500).json({ error: "Error fetching lots" });
     }
   }
 
-  // get a lot by ID
+  // Get a lot by ID
   public async getLotById(req: Request, res: Response) {
     try {
       const { id: pk } = req.params;
+
       const lot = await Lot.findOne({
-        where: { id: pk},
-        include: [{ model: Product}],
+        where: { id: pk },
       });
 
       if (lot) {
@@ -63,7 +68,7 @@ export class LotController {
 
     try {
       const lotExist = await Lot.findOne({
-        where: { id: pk, status: "AVAILABLE" },
+        where: { id: pk, status: "AVAILABLE" },  // Solo permite modificar disponibles
       });
 
       if (lotExist) {
@@ -100,22 +105,23 @@ export class LotController {
     }
   }
 
-  // Delete a lot logically (set status to "EXPIRED" or "BLOCKED")
+  // Delete a lot logically (set status to "BLOCKED")
   public async deleteLotAdv(req: Request, res: Response) {
     try {
       const { id: pk } = req.params;
+
       const lotToUpdate = await Lot.findOne({
-        where: { id: pk, status: "AVAILABLE" },
+        where: { id: pk, status: "AVAILABLE" },  // Solo se pueden bloquear los disponibles
       });
 
       if (lotToUpdate) {
-        await lotToUpdate.update({ status: "EXPIRED" });
-        res.status(200).json({ message: "Lot marked as expired" });
+        await lotToUpdate.update({ status: "BLOCKED" }); 
+        res.status(200).json({ message: "Lot marked as blocked" });
       } else {
         res.status(404).json({ error: "Lot not found or unavailable" });
       }
     } catch (error) {
-      res.status(500).json({ error: "Error marking lot as expired" });
+      res.status(500).json({ error: "Error marking lot as blocked" });
     }
   }
 }
