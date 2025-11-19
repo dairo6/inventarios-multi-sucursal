@@ -112,7 +112,8 @@ CRUD completo para administrar sucursales del sistema.
 
 <img width="1365" height="719" alt="image" src="https://github.com/user-attachments/assets/8fa70c04-8c6a-4d1f-b827-774fdc5dc863" />
 
-<img width="1365" height="767" alt="Captura de pantalla 2025-11-19 020540" src="https://github.com/user-attachments/assets/bde65a98-2d53-47f8-a9b3-c42f9669c844" />
+<img width="1363" height="683" alt="Captura de pantalla 2025-11-19 022445" src="https://github.com/user-attachments/assets/4452e89d-15e8-49e3-a33c-7856fb207d45" />
+
 
 
 ---
