@@ -47,7 +47,7 @@ Aquí se muestran las vistas y funcionamiento del módulo de autenticación, don
 - Botón para iniciar sesión.
 - Acceso a la opción de registro de nuevos usuarios.
 
-(![alt text](image.png))
+<img width="1358" height="677" alt="Captura de pantalla 2025-11-19 014025" src="https://github.com/user-attachments/assets/d8e22fe4-38a6-49b1-a786-9069db3e2082" />
 
 (<img width="1361" height="675" alt="image" src="https://github.com/user-attachments/assets/5946a89a-ed34-4ac4-b429-34764480448b" />)
 
