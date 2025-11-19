@@ -36,7 +36,7 @@ Una empresa necesita un sistema para controlar el inventario distribuido en vari
 
 ### Productos
 - Lista de productos:
-![ListadoProducto](https://github.com/user-attachments/assets/215c9510-a474-46fc-b5f2-ec7c602617b8)
+<img width="1358" height="677" alt="image" src="https://github.com/user-attachments/assets/42cad0be-12ff-4886-99ea-8b097ce05313" />
 
 - Crear producto:
 ![CrearProducto](https://github.com/user-attachments/assets/347ef539-0e8a-465e-90b4-cb41bd18880b)
