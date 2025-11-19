@@ -1,7 +1,14 @@
 export interface LocationI {
   id?: number;
-  warehouse: String; // almacén
-  code: string;            // ej: pasillo A, estante 3
+  warehouse_id: number; // almacén
+  code: string;            
   description?: string;
   status: "AVAILABLE" | "OCCUPIED" | "BLOCKED";
+
+
+  warehouse: {
+    id: number;
+    name: string;
+    status: "ACTIVE" | "INACTIVE";  
+  }
 }

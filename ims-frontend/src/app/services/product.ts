@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { ProductI } from '../models/product';
 
@@ -6,72 +8,64 @@ import { ProductI } from '../models/product';
   providedIn: 'root'
 })
 export class ProductService {
-  private productsService = new BehaviorSubject<ProductI[]>([
-    {
-      id: 1,
-      name: 'Laptop Dell XPS 13',
-      code: 'PROD-001',
-      description: 'Ultrabook con pantalla 13.4" FHD',
-      price: 1200,
-      unit: 'unidad',
-      category: 'tecnologia',
-      supplier: 'DELL',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-01-01'),
-      updatedAt: new Date('2025-01-10')
-    },
-    {
-      id: 2,
-      name: 'Teclado Mecánico Logitech',
-      code: 'PROD-002',
-      description: 'Teclado gamer con switches rojos',
-      price: 150,
-      unit: 'unidad',
-      category: 'tecnologia',
-      supplier: 'Logitech',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-02-01'),
-      updatedAt: new Date('2025-02-15')
-    },
-    {
-      id: 3,
-      name: 'Monitor LG 27"',
-      code: 'PROD-003',
-      description: 'Monitor IPS 4K UHD',
-      price: 350,
-      unit: 'unidad',
-      category: 'tecnologia',
-      supplier: 'LG',
-      status: 'INACTIVE',
-      createdAt: new Date('2025-03-05'),
-      updatedAt: new Date('2025-03-10')
-    },
-    {
-      id: 4,
-      name: 'Monitor HP 27"',
-      code: 'PROD-003',
-      description: 'Monitor IPS 4K UHD',
-      price: 350,
-      unit: 'unidad',
-      category: 'tecnologia',
-      supplier: 'HP',
-      status: 'INACTIVE',
-      createdAt: new Date('2025-03-05'),
-      updatedAt: new Date('2025-03-10')
-    }
-  ]);
-
-  products$ = this.productsService.asObservable();
-
-  getProducts() {
-    return this.productsService.value;
-  }
-
-  addProduct(product: ProductI) {
-    const products = this.productsService.value;
-    product.id = products.length ? Math.max(...products.map(p => p.id ?? 0)) + 1 : 1;
-    product.createdAt = new Date();
-    product.updatedAt = new Date();
-    this.productsService.next([...products, product]);
-  }
+ 
+   private baseUrl = 'http://localhost:3000/productos';
+   private productsSubject = new BehaviorSubject<ProductI[]>([]);
+   public products$ = this.productsSubject.asObservable();
+ 
+   constructor(
+     private http: HttpClient,
+     // private authService: AuthService
+   ) {}
+ 
+   private getHeaders(): HttpHeaders {
+     let headers = new HttpHeaders();
+     // const token = this.authService.getToken();
+     // if (token) {
+     //   headers = headers.set('Authorization', `Bearer ${token}`);
+     // }
+     return headers;
+   }
+ 
+ 
+   getAllProducts(): Observable<ProductI[]> {
+     return this.http.get<ProductI[]>(this.baseUrl, { headers: this.getHeaders() })
+     // .pipe(
+     //   tap(response => {
+     //       // console.log('Fetched branchs:', response);
+     //     })
+     // )
+     ;
+   }
+ 
+   getProductById(id: number): Observable<ProductI> {
+     return this.http.get<ProductI>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+   }
+ 
+   createProduct(product: ProductI): Observable<ProductI> {
+     return this.http.post<ProductI>(this.baseUrl, product, { headers: this.getHeaders() });
+   }
+ 
+   updateProduct(id: number, product: ProductI): Observable<ProductI> {
+     return this.http.patch<ProductI>(`${this.baseUrl}/${id}`, product, { headers: this.getHeaders() });
+   }
+ 
+   deleteProduct(id: number): Observable<void> {
+     return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+   }
+ 
+   deleteProductLogic(id: number): Observable<void> {
+     return this.http.delete<void>(`${this.baseUrl}/${id}/logic`, { headers: this.getHeaders() });
+   }
+ 
+   // Método para actualizar el estado local de las sucursales
+   updateLocalProducts(products: ProductI[]): void {
+     this.productsSubject.next(products);
+   }
+ 
+   refreshBranches(): void {
+     this.getAllProducts().subscribe(products => {
+       this.productsSubject.next(products);
+     });
+   }
 }

@@ -1,12 +1,26 @@
 export interface ProductI {
   id?: number;
   name: string;
-  code: string;            // código único interno
+  code: string;
   description?: string;
   price: number;
-  unit: string;            // unidad de medida (kg, unidad, caja)
-  category?: string;
-  supplier?: string;
+  unit: string;
+  stock: number;
+  category_id?: number;
+  supplier_id?: number;
+
+  category?: {
+    id: number;
+    name: string;
+    status: "ACTIVE" | "INACTIVE";
+  };
+
+  supplier?: {
+    id: number;
+    name: string;
+    status: "ACTIVE" | "INACTIVE";
+  };
+
   status: "ACTIVE" | "INACTIVE";
   createdAt?: Date;
   updatedAt?: Date;

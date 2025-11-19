@@ -9,3 +9,12 @@ export interface BranchI {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface BranchResponseI {
+  id?: number;
+  name: string;
+  code: string;            // código único de sucursal
+  address: string;
+  phone?: string;
+  email?: string;
+}

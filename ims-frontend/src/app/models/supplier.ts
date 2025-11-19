@@ -10,3 +10,13 @@ export interface SupplierI {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface SupplierResponseI {
+  id?: number;
+  name: string;
+  taxId: string;           // NIT, RUT, RFC...
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+}

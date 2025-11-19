@@ -44,7 +44,7 @@
       <tbody class="bg-lime-50 text-gray-900 text-center">
         <tr *ngFor="let lot of lots" class="hover:bg-green-100">
          
-          <td class="py-3 px-4">{{ lot.product }}</td>
+          <td class="py-3 px-4">{{ lot.product?.name}}</td>
           <td class="py-3 px-4">{{ lot.code }}</td>
           <td class="py-3 px-4">{{ lot.expirationDate }}</td>
           <td class="py-3 px-4">{{ lot.quantity }}</td>
@@ -55,8 +55,22 @@
           </td>
           <td class="py-3 px-4">
             <div class="flex justify-center gap-2"> 
-              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
-              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text p-button-warning"
+                [routerLink]="['/lots/update', lot.id]"
+                pTooltip="Editar">
+              </button>
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deleteLot(lot)" 
+                pTooltip="Eliminar">
+              </button>
             </div>
           </td>
         </tr>
@@ -64,4 +78,7 @@
     </table>
   </div>
 </div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
 

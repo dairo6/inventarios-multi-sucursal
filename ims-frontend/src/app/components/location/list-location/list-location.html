@@ -39,7 +39,7 @@
       <!-- Cuerpo con scroll -->
       <tbody class="bg-lime-50 text-gray-900 text-center">
         <tr *ngFor="let location of locations" class="hover:bg-green-100">
-          <td class="py-3 px-4">{{ location.warehouse }}</td>
+          <td class="py-3 px-4">{{ location.warehouse.name }}</td>
           <td class="py-3 px-4">{{ location.code }}</td>
           <td class="py-3 px-4">{{ location.description || '---' }}</td>
           <td class="py-3 px-4">
@@ -51,9 +51,23 @@
                    " /> 
           </td>
           <td class="py-3 px-4">
-            <div class="flex justify-center gap-2"> 
-              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
-              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+            <div class="flex justify-center gap-2">
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text p-button-warning"
+                [routerLink]="['/locations/update', location.id]"
+                pTooltip="Editar">
+              </button>
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deleteLocation(location)" 
+                pTooltip="Eliminar">
+              </button>
             </div>
           </td>
         </tr>
@@ -61,4 +75,7 @@
     </table>
   </div>
 </div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
 

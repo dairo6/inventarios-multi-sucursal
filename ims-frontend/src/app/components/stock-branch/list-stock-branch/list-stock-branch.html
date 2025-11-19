@@ -44,8 +44,8 @@
       <tbody class="bg-lime-50 text-gray-900 text-center">
         <tr *ngFor="let stockBranch of stockBranches" class="hover:bg-green-100">
         
-          <td class="py-3 px-4">{{ stockBranch.branch }}</td>
-          <td class="py-3 px-4">{{ stockBranch.product }}</td>
+          <td class="py-3 px-4">{{ stockBranch.branch.name }}</td>
+          <td class="py-3 px-4">{{ stockBranch.product.name }}</td>
           <td class="py-3 px-4">{{ stockBranch.quantity}}</td>
           <td class="py-3 px-4">{{ stockBranch.minStock }}</td>
           <td class="py-3 px-4">{{ stockBranch.maxStock }}</td>
@@ -54,9 +54,23 @@
                    [severity]="stockBranch.status === 'ACTIVE' ? 'success' : 'danger'" /> 
           </td>
           <td class="py-3 px-4">
-            <div class="flex justify-center gap-2"> 
-              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
-              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+            <div class="flex justify-center gap-2">
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text p-button-warning"
+                [routerLink]="['/stock-branches/update', stockBranch.id]"
+                pTooltip="Editar">
+              </button>
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deleteStockBranch(stockBranch)" 
+                pTooltip="Eliminar">
+              </button>
             </div>
           </td>
         </tr>
@@ -64,4 +78,7 @@
     </table>
   </div>
 </div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
 

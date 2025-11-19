@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { BranchI } from '../models/branch';
 
@@ -7,65 +9,63 @@ import { BranchI } from '../models/branch';
 })
 export class BranchService {
 
-  private branchesService = new BehaviorSubject<BranchI[]>([
-    {
-      id: 1,
-      name: 'Sucursal Central',
-      code: 'BR-001',
-      address: 'Calle 123 #45-67, Ciudad Central',
-      phone: '3001234567',
-      email: 'central@empresa.com',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-01-01'),
-      updatedAt: new Date('2025-01-10')
-    },
-    {
-      id: 2,
-      name: 'Sucursal Norte',
-      code: 'BR-002',
-      address: 'Av. 10 #20-30, Ciudad Norte',
-      phone: '3109876543',
-      email: 'norte@empresa.com',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-02-01'),
-      updatedAt: new Date('2025-02-05')
-    },
-    {
-      id: 3,
-      name: 'Sucursal Sur',
-      code: 'BR-003',
-      address: 'Cra. 50 #60-70, Ciudad Sur',
-      phone: '3205558899',
-      email: 'sur@empresa.com',
-      status: 'INACTIVE',
-      createdAt: new Date('2025-03-01'),
-      updatedAt: new Date('2025-03-10')
-    }
-  ]);
+  private baseUrl = 'http://localhost:3000/sucursales';
+  private branchesSubject = new BehaviorSubject<BranchI[]>([]);
+  public branches$ = this.branchesSubject.asObservable();
 
-  branches$ = this.branchesService.asObservable();
+  constructor(
+    private http: HttpClient,
+    // private authService: AuthService
+  ) {}
 
-  getBranches() {
-    return this.branchesService.value;
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    // const token = this.authService.getToken();
+    // if (token) {
+    //   headers = headers.set('Authorization', `Bearer ${token}`);
+    // }
+    return headers;
   }
 
-  addBranch(branch: BranchI) {
-    const branches = this.branchesService.value;
-    branch.id = branches.length ? Math.max(...branches.map(b => b.id ?? 0)) + 1 : 1;
-    branch.createdAt = new Date();
-    branch.updatedAt = new Date();
-    this.branchesService.next([...branches, branch]);
+
+  getAllBranches(): Observable<BranchI[]> {
+    return this.http.get<BranchI[]>(this.baseUrl, { headers: this.getHeaders() })
+    // .pipe(
+    //   tap(response => {
+    //       // console.log('Fetched branchs:', response);
+    //     })
+    // )
+    ;
   }
 
-  updateBranch(updatedBranch: BranchI) {
-    const branches = this.branchesService.value.map(b =>
-      b.id === updatedBranch.id ? { ...b, ...updatedBranch, updatedAt: new Date() } : b
-    );
-    this.branchesService.next(branches);
+  getBranchById(id: number): Observable<BranchI> {
+    return this.http.get<BranchI>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
   }
 
-  deleteBranch(id: number) {
-    const branches = this.branchesService.value.filter(b => b.id !== id);
-    this.branchesService.next(branches);
+  createBranch(branch: BranchI): Observable<BranchI> {
+    return this.http.post<BranchI>(this.baseUrl, branch, { headers: this.getHeaders() });
+  }
+
+  updateBranch(id: number, branch: BranchI): Observable<BranchI> {
+    return this.http.patch<BranchI>(`${this.baseUrl}/${id}`, branch, { headers: this.getHeaders() });
+  }
+
+  deleteBranch(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+  }
+
+  deleteBranchLogic(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}/logic`, { headers: this.getHeaders() });
+  }
+
+  // Método para actualizar el estado local de las sucursales
+  updateLocalBranches(branches: BranchI[]): void {
+    this.branchesSubject.next(branches);
+  }
+
+  refreshBranches(): void {
+    this.getAllBranches().subscribe(branches => {
+      this.branchesSubject.next(branches);
+    });
   }
 }

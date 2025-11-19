@@ -1,85 +1,63 @@
-<div class="card bg-blue-50 rounded-lg shadow-lg p-6 max-w-3xl mx-auto">
+<div class="card bg-blue-50 rounded-lg shadow-lg p-6 max-w-5xl mx-auto">
   <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
     Crear Nueva Garantía
   </h2>
 
-  <form [formGroup]="guaranteeForm" (ngSubmit)="onSubmit()">
-    <!-- Producto -->
-    <div>
-      <label class="block font-medium text-gray-700 mb-2">Producto</label>
-      <p-select
-        [options]="products"
-        formControlName="product"
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Producto -->
+      
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Producto</label>
+        <p-select 
+        [options]="ProductOptions" 
+        formControlName="product_id" 
         placeholder="Seleccione un producto"
-        optionLabel="label"
-        optionValue="value"
-        class="w-full"
-      ></p-select>
-    </div>
+          optionLabel="label" 
+          optionValue="value" 
+          class="w-full">
+        </p-select>
+      </div>
 
-    <!-- Duración -->
-    <div>
-      <label class="block font-medium text-gray-700 mb-2">Duración (meses)</label>
-      <input
-        type="number"
-        pInputText
-        formControlName="durationMonths"
-        placeholder="Ej: 12"
-        class="w-full rounded-md"
-      />
-    </div>
+      <!-- Duración -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Duración (meses)</label>
+        <input type="number" pInputText formControlName="durationMonths" placeholder="Ej: 12"
+          class="w-full rounded-md" />
+      </div>
 
-    <!-- Descripción -->
-    <div>
-      <label class="block font-medium text-gray-700 mb-2">Descripción</label>
-      <textarea
-        pInputTextarea
-        formControlName="description"
-        placeholder="Ingrese la descripción"
-        rows="3"
-        class="w-full rounded-md"
-      ></textarea>
-    </div>
+      <!-- Estado -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Estado</label>
+        <p-select [options]="statusOptions" formControlName="status" placeholder="Seleccione el estado"
+          optionLabel="label" optionValue="value" class="w-full"></p-select>
+      </div>
 
-    <!-- Términos -->
-    <div>
-      <label class="block font-medium text-gray-700 mb-2">Términos</label>
-      <textarea
-        pInputTextarea
-        formControlName="terms"
-        placeholder="Ingrese los términos de la garantía"
-        rows="3"
-        class="w-full rounded-md"
-      ></textarea>
-    </div>
+      <!-- Descripción -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Descripción</label>
+        <textarea pInputTextarea formControlName="description" placeholder="Ingrese la descripción" rows="3"
+          class="w-full rounded-md"></textarea>
+      </div>
 
-    <!-- Estado -->
-    <div>
-      <label class="block font-medium text-gray-700 mb-2">Estado</label>
-      <p-select
-        [options]="statusOptions"
-        formControlName="status"
-        placeholder="Seleccione el estado"
-        optionLabel="label"
-        optionValue="value"
-        class="w-full"
-      ></p-select>
-    </div>
+      <!-- Términos -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-2">Términos</label>
+        <textarea pInputTextarea formControlName="terms" placeholder="Ingrese los términos de la garantía" rows="3"
+          class="w-full rounded-md"></textarea>
+      </div>
 
+      
+    </div>
     <!-- Botones -->
-    <div class="form-actions">
-      <p-button
-        label="Cancelar"
-        severity="secondary"
-        (onClick)="onCancel()"
-      ></p-button>
-      <p-button
-        label="Guardar"
-        severity="success"
-        type="submit"
-        [disabled]="!guaranteeForm.valid"
-      ></p-button>
+    <div class="flex justify-end gap-4 mt-8 w-full">
+      <p-button label="Cancelar" severity="secondary" (click)="cancelar()" [disabled]="loading"></p-button>
+      <button pButton type="submit" class="p-button bg-blue-500 hover:bg-blue-600 text-white" label="Guardar"
+        icon="pi pi-save" [loading]="loading" [disabled]="loading"></button>
     </div>
   </form>
 </div>
 
+<p-toast></p-toast>

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { WarehouseI } from '../models/warehouse';
 
@@ -7,58 +9,64 @@ import { WarehouseI } from '../models/warehouse';
 })
 export class WarehouseService {
 
-  private warehousesService = new BehaviorSubject<WarehouseI[]>([
-    {
-      id: 1,
-      branch: 'Sucursal Principal',
-      name: 'Almacén Central',
-      code: 'WH-001',
-      description: 'Almacén principal donde se guardan los productos de tecnología',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-01-01')
-    },
-    {
-      id: 2,
-      branch: 'Sucursal Norte',
-      name: 'Depósito Norte',
-      code: 'WH-002',
-      description: 'Depósito secundario para periféricos',
-      status: 'ACTIVE',
-      createdAt: new Date('2025-02-10')
-    },
-    {
-      id: 3,
-      branch: 'Sucursal Centro',
-      name: 'Bodega Centro',
-      code: 'WH-003',
-      description: 'Bodega para productos en promoción',
-      status: 'INACTIVE',
-      createdAt: new Date('2025-03-15')
-    }
-  ]);
-
-  warehouses$ = this.warehousesService.asObservable();
-
-  getWarehouses() {
-    return this.warehousesService.value;
-  }
-
-  addWarehouse(warehouse: WarehouseI) {
-    const warehouses = this.warehousesService.value;
-    warehouse.id = warehouses.length ? Math.max(...warehouses.map(w => w.id ?? 0)) + 1 : 1;
-    warehouse.createdAt = new Date();
-    this.warehousesService.next([...warehouses, warehouse]);
-  }
-
-  updateWarehouse(updatedWarehouse: WarehouseI) {
-    const warehouses = this.warehousesService.value.map(w =>
-      w.id === updatedWarehouse.id ? { ...w, ...updatedWarehouse } : w
-    );
-    this.warehousesService.next(warehouses);
-  }
-
-  deleteWarehouse(id: number) {
-    const warehouses = this.warehousesService.value.filter(w => w.id !== id);
-    this.warehousesService.next(warehouses);
-  }
+   private baseUrl = 'http://localhost:3000/bodegas';
+     private warehousesSubject = new BehaviorSubject<WarehouseI[]>([]);
+     public warehouse$ = this.warehousesSubject.asObservable();
+   
+     constructor(
+       private http: HttpClient,
+       // private authService: AuthService
+     ) {}
+   
+     private getHeaders(): HttpHeaders {
+       let headers = new HttpHeaders();
+       // const token = this.authService.getToken();
+       // if (token) {
+       //   headers = headers.set('Authorization', `Bearer ${token}`);
+       // }
+       return headers;
+     }
+   
+   
+     getAllWarehouses(): Observable<WarehouseI[]> {
+       return this.http.get<WarehouseI[]>(this.baseUrl, { headers: this.getHeaders() })
+       // .pipe(
+       //   tap(response => {
+       //       // console.log('Fetched branchs:', response);
+       //     })
+       // )
+       ;
+     }
+   
+     getWarehouseById(id: number): Observable<WarehouseI> {
+       return this.http.get<WarehouseI>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+     }
+   
+     createWarehouse(product: WarehouseI): Observable<WarehouseI> {
+       return this.http.post<WarehouseI>(this.baseUrl, product, { headers: this.getHeaders() });
+     }
+   
+     updateWarehouse(id: number, product: WarehouseI): Observable<WarehouseI> {
+       return this.http.patch<WarehouseI>(`${this.baseUrl}/${id}`, product, { headers: this.getHeaders() });
+     }
+   
+     deleteWarehouse(id: number): Observable<void> {
+       return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+     }
+   
+     deleteWarehouseLogic(id: number): Observable<void> {
+       return this.http.delete<void>(`${this.baseUrl}/${id}/logic`, { headers: this.getHeaders() });
+     }
+   
+     // Método para actualizar el estado local de las sucursales
+     updateLocalWarehouses(warehouses: WarehouseI[]): void {
+       this.warehousesSubject.next(warehouses);
+     }
+   
+     refreshWarehouses(): void {
+       this.getAllWarehouses().subscribe(warehouses => {
+         this.warehousesSubject.next(warehouses);
+       });
+     }
+ 
 }

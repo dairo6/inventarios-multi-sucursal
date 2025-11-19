@@ -35,7 +35,6 @@
           <th class="py-3 px-4 text-center">Cantidad</th>
           <th class="py-3 px-4 text-center">Referencia</th>
           <th class="py-3 px-4 text-center">Fecha</th>
-          <th class="py-3 px-4 text-center">Usuario</th>
           <th class="py-3 px-4 text-center">Acciones</th>
         </tr>
       </thead> 
@@ -43,9 +42,9 @@
       <!-- Cuerpo con scroll -->
       <tbody class="bg-lime-50 text-gray-900 text-center">
         <tr *ngFor="let move of movements" class="hover:bg-green-100">
-          <td class="py-3 px-4">{{ move.product }}</td>
-          <td class="py-3 px-4">{{ move.warehouse }}</td>
-          <td class="py-3 px-4">{{ move.lot || '—' }}</td>
+          <td class="py-3 px-4">{{ move.product.name }}</td>
+          <td class="py-3 px-4">{{ move.warehouse.name }}</td>
+          <td class="py-3 px-4">{{ move.lot?.code || '—' }}</td>
           <td class="py-3 px-4">
             <p-tag 
               [value]="move.movementType"
@@ -58,11 +57,24 @@
           <td class="py-3 px-4">{{ move.quantity }}</td>
           <td class="py-3 px-4">{{ move.reference || '—' }}</td>
           <td class="py-3 px-4">{{ move.createdAt | date:'short' }}</td>
-          <td class="py-3 px-4">{{ move.user }}</td>
           <td class="py-3 px-4">
-            <div class="flex justify-center gap-2"> 
-              <p-button icon="pi pi-pencil" severity="warn" [rounded]="true" />
-              <p-button icon="pi pi-times" severity="danger" [rounded]="true" />
+             <div class="flex justify-center gap-2"> 
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text p-button-warning"
+                [routerLink]="['/lots/update', move.id]"
+                pTooltip="Editar">
+              </button>
+              <button 
+                pButton 
+                type="button" 
+                icon="pi pi-trash" 
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="deleteMovement(move)" 
+                pTooltip="Eliminar">
+              </button>
             </div>
           </td>
         </tr>
@@ -70,3 +82,7 @@
     </table>
   </div>
 </div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+

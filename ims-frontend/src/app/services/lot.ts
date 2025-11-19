@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { LotI } from '../models/lot';
 
@@ -7,67 +9,65 @@ import { LotI } from '../models/lot';
 })
 export class LotService {
 
-  private lotsService = new BehaviorSubject<LotI[]>([
-    {
-      id: 1,
-      product: 'Laptop Dell XPS 13',
-      code: 'LOT-001',
-      expirationDate: new Date('2026-01-01'),
-      quantity: 100,
-      status: 'AVAILABLE',
-      createdAt: new Date('2025-01-01')
-    },
-    {
-      id: 2,
-      product: 'Teclado Mecánico Logitech',
-      code: 'LOT-002',
-      expirationDate: new Date('2025-06-15'),
-      quantity: 50,
-      status: 'EXPIRED',
-      createdAt: new Date('2025-02-10')
-    },
-    {
-      id: 3,
-      product: 'Monitor LG 27"',
-      code: 'LOT-003',
-      expirationDate: new Date('2025-12-20'),
-      quantity: 200,
-      status: 'BLOCKED',
-      createdAt: new Date('2025-03-05')
-    },
-    {
-      id: 4,
-      product: 'Monitor LG 32"',
-      code: 'LOT-004',
-      expirationDate: new Date('2025-12-20'),
-      quantity: 250,
-      status: 'AVAILABLE',
-      createdAt: new Date('2025-03-05')
-    }
-  ]);
 
-  lots$ = this.lotsService.asObservable();
-
-  getLots() {
-    return this.lotsService.value;
-  }
-
-  addLot(lot: LotI) {
-    const lots = this.lotsService.value;
-    lot.id = lots.length ? Math.max(...lots.map(l => l.id ?? 0)) + 1 : 1;
-    lot.createdAt = new Date();
-    this.lotsService.next([...lots, lot]);
-  }
-
-  updateLot(updatedLot: LotI) {
-    const lots = this.lotsService.value.map(l =>
-      l.id === updatedLot.id ? { ...l, ...updatedLot } : l
-    );
-    this.lotsService.next(lots);
-  }
-
-  deleteLot(id: number) {
-    const lots = this.lotsService.value.filter(l => l.id !== id);
-    this.lotsService.next(lots);
-  }
+     private baseUrl = 'http://localhost:3000/lotes';
+       private lotsSubject = new BehaviorSubject<LotI[]>([]);
+       public lot$ = this.lotsSubject.asObservable();
+     
+       constructor(
+         private http: HttpClient,
+         // private authService: AuthService
+       ) {}
+     
+       private getHeaders(): HttpHeaders {
+         let headers = new HttpHeaders();
+         // const token = this.authService.getToken();
+         // if (token) {
+         //   headers = headers.set('Authorization', `Bearer ${token}`);
+         // }
+         return headers;
+       }
+     
+     
+       getAllLots(): Observable<LotI[]> {
+         return this.http.get<LotI[]>(this.baseUrl, { headers: this.getHeaders() })
+         // .pipe(
+         //   tap(response => {
+         //       // console.log('Fetched branchs:', response);
+         //     })
+         // )
+         ;
+       }
+     
+       getLotById(id: number): Observable<LotI> {
+         return this.http.get<LotI>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+       }
+     
+       createLot(lot: LotI): Observable<LotI> {
+         return this.http.post<LotI>(this.baseUrl, lot, { headers: this.getHeaders() });
+       }
+     
+       updateLot(id: number, lot: LotI): Observable<LotI> {
+         return this.http.patch<LotI>(`${this.baseUrl}/${id}`, lot, { headers: this.getHeaders() });
+       }
+     
+       deleteLot(id: number): Observable<void> {
+         return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+       }
+     
+       deleteLotLogic(id: number): Observable<void> {
+         return this.http.delete<void>(`${this.baseUrl}/${id}/logic`, { headers: this.getHeaders() });
+       }
+     
+       // Método para actualizar el estado local de las localizaciones
+       updateLocalLots(lots: LotI[]): void {
+         this.lotsSubject.next(lots);
+       }
+     
+       refreshLots(): void {
+         this.getAllLots().subscribe(lots => {
+           this.lotsSubject.next(lots);
+         });
+       }
+  
 }

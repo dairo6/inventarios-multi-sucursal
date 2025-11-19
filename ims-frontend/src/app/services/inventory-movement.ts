@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { InventoryMovementI } from '../models/inventoryMovement';
 
@@ -7,63 +9,63 @@ import { InventoryMovementI } from '../models/inventoryMovement';
 })
 export class InventoryMovementService {
 
-  private movementsService = new BehaviorSubject<InventoryMovementI[]>([
-    {
-      id: 1,
-      product: 'Laptop Dell XPS 13',
-      warehouse: 'Central',
-      lot: 'LOT-001',
-      movementType: 'IN',
-      quantity: 50,
-      reference: 'Compra #1001',
-      createdAt: new Date('2025-01-10'),
-      user: 'admin'
-    },
-    {
-      id: 2,
-      product: 'Teclado Mecánico Logitech',
-      warehouse: 'Sucursal Norte',
-      movementType: 'OUT',
-      quantity: 10,
-      reference: 'Factura #2001',
-      createdAt: new Date('2025-02-05'),
-      user: 'jdoe'
-    },
-    {
-      id: 3,
-      product: 'Monitor LG 27"',
-      warehouse: 'Central',
-      lot: 'LOT-003',
-      movementType: 'TRANSFER',
-      quantity: 5,
-      reference: 'Transferencia a Sucursal Sur',
-      createdAt: new Date('2025-03-01'),
-      user: 'admin'
-    }
-  ]);
-
-  movements$ = this.movementsService.asObservable();
-
-  getMovements() {
-    return this.movementsService.value;
-  }
-
-  addMovement(movement: InventoryMovementI) {
-    const movements = this.movementsService.value;
-    movement.id = movements.length ? Math.max(...movements.map(m => m.id ?? 0)) + 1 : 1;
-    movement.createdAt = new Date();
-    this.movementsService.next([...movements, movement]);
-  }
-
-  updateMovement(updatedMovement: InventoryMovementI) {
-    const movements = this.movementsService.value.map(m =>
-      m.id === updatedMovement.id ? { ...m, ...updatedMovement } : m
-    );
-    this.movementsService.next(movements);
-  }
-
-  deleteMovement(id: number) {
-    const movements = this.movementsService.value.filter(m => m.id !== id);
-    this.movementsService.next(movements);
-  }
+  private baseUrl = 'http://localhost:3000/movimientos-inventario';
+       private inventoryMovementsSubject = new BehaviorSubject<InventoryMovementI[]>([]);
+       public inventoryMovements$ = this.inventoryMovementsSubject.asObservable();
+     
+       constructor(
+         private http: HttpClient,
+         // private authService: AuthService
+       ) {}
+     
+       private getHeaders(): HttpHeaders {
+         let headers = new HttpHeaders();
+         // const token = this.authService.getToken();
+         // if (token) {
+         //   headers = headers.set('Authorization', `Bearer ${token}`);
+         // }
+         return headers;
+       }
+     
+     
+       getAllInventoryMovements(): Observable<InventoryMovementI[]> {
+         return this.http.get<InventoryMovementI[]>(this.baseUrl, { headers: this.getHeaders() })
+         // .pipe(
+         //   tap(response => {
+         //       // console.log('Fetched branchs:', response);
+         //     })
+         // )
+         ;
+       }
+     
+       getInventoryMovementById(id: number): Observable<InventoryMovementI> {
+         return this.http.get<InventoryMovementI>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+       }
+     
+       createInventoryMovement(guarantee: InventoryMovementI): Observable<InventoryMovementI> {
+         return this.http.post<InventoryMovementI>(this.baseUrl, guarantee, { headers: this.getHeaders() });
+       }
+     
+       updateInventoryMovement(id: number, guarantee: InventoryMovementI): Observable<InventoryMovementI> {
+         return this.http.patch<InventoryMovementI>(`${this.baseUrl}/${id}`, guarantee, { headers: this.getHeaders() });
+       }
+     
+       deleteInventoryMovement(id: number): Observable<void> {
+         return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+       }
+     
+       deleteInventoryMovementLogic(id: number): Observable<void> {
+         return this.http.delete<void>(`${this.baseUrl}/${id}/logic`, { headers: this.getHeaders() });
+       }
+     
+       // Método para actualizar el estado local de las sucursales
+       updateLocalInventoryMovements(inventoryMovements: InventoryMovementI[]): void {
+         this.inventoryMovementsSubject.next(inventoryMovements);
+       }
+     
+       refreshInventoryMovement(): void {
+         this.getAllInventoryMovements().subscribe(inventoryMovements => {
+           this.inventoryMovementsSubject.next(inventoryMovements);
+         });
+       }
 }

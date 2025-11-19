@@ -1,15 +1,1 @@
-/* Estilos para el formulario */
-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* dos columnas iguales */
-  gap: 1.5rem; /* espacio entre filas y columnas */
-}
 
-/* Hacemos que los botones ocupen toda la fila */
-form .form-actions {
-  grid-column: span 2;
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
-}
