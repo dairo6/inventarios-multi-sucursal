@@ -1,0 +1,109 @@
+<!-- CARD PRINCIPAL -->
+<div class="card bg-blue-50 rounded-lg shadow-lg p-4">
+
+  <!-- TÍTULO -->
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold text-gray-900">Lista de Usuarios</h2>
+  </div>
+
+  <!-- TABLA CON SCROLL COMO EL DISEÑO DE PRODUCTOS -->
+  <div class="overflow-y-auto max-h-[345px] rounded-lg shadow-inner">
+
+    <table class="w-full border-collapse">
+
+      <!-- ENCABEZADO FIJO -->
+      <thead class="sticky top-0 z-10">
+        <tr class="bg-blue-100 text-gray-900">
+          <th class="py-3 px-4 text-center">Usuario</th>
+          <th class="py-3 px-4 text-center">Email</th>
+          <th class="py-3 px-4 text-center">Rol</th>
+          <th class="py-3 px-4 text-center">Acciones</th>
+        </tr>
+      </thead>
+
+      <!-- CUERPO -->
+      <tbody class="bg-lime-50 text-gray-900 text-center">
+
+        <tr *ngFor="let user of users" class="hover:bg-green-100 transition">
+          <td class="py-3 px-4">{{ user.username }}</td>
+          <td class="py-3 px-4">{{ user.email }}</td>
+          <td class="py-3 px-4 font-semibold text-primary">
+            {{ user.RoleUsers?.[0]?.Role?.name || 'Sin rol' }}
+          </td>
+          <td class="py-3 px-4">
+            <div class="flex justify-center">
+              <button pButton icon="pi pi-cog" label="Asignar rol"
+                class="p-button-sm border-round-lg shadow-2 hover:shadow-3 "
+                style="background-color: orange; border-color: orange; color: white;" (click)="openRoleModal(user)">
+              </button>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+<!-- MODAL -->
+<p-dialog 
+  header="Asignar rol" 
+  [(visible)]="showRoleModal" 
+  [modal]="true" 
+  [closable]="true" 
+  [style]="{ width: '450px' }"
+  [contentStyle]="{ 'padding': '2rem' }"
+  [baseZIndex]="10000"
+  styleClass="custom-dialog"
+  >
+
+  <div class="modal-content">
+    <!-- LABEL -->
+    <label class="block text-sm font-semibold text-gray-700 mb-3">Seleccione un rol para asignar</label>
+    
+    <!-- SELECT -->
+    <p-select 
+      [options]="roles" 
+      optionLabel="name" 
+      optionValue="id" 
+      [(ngModel)]="selectedRoleId"
+      placeholder="Seleccione un rol" 
+      class="w-full mb-6"
+      [showClear]="true"
+      appendTo="body">
+    </p-select>
+
+    <!-- INFORMACIÓN -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded mb-6" *ngIf="selectedRoleId">
+      <p class="text-sm text-blue-800">
+        <strong>Rol seleccionado:</strong> Este rol será asignado al usuario
+      </p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end gap-3">
+      <button 
+        pButton 
+        label="Cancelar" 
+        class="p-button-outlined p-button-secondary" 
+        (click)="closeModal()"
+        icon="pi pi-times">
+      </button>
+
+      <button 
+        pButton 
+        label="Guardar" 
+        class="p-button-success" 
+        [loading]="loading" 
+        (click)="assignRole()"
+        icon="pi pi-check">
+      </button>
+    </div>
+  </ng-template>
+
+</p-dialog>

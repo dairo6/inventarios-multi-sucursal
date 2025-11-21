@@ -3,7 +3,7 @@ export interface LotI {
   product_id: number;       // id del producto asociado
   code: string;            // lote asignado
   expirationDate?: Date;
-  quantity: number;
+  quantity?: number;
   status: "AVAILABLE" | "EXPIRED" | "BLOCKED";
   createdAt?: Date;
 

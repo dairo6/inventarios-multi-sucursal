@@ -42,8 +42,8 @@ export class CreateInventoryMovement implements OnInit {
   ];
 
   MovementOptions = [
-    { label: 'Salida', value: 'IN' },
-    { label: 'Entrada', value: 'OUT' },
+    { label: 'Entrada', value: 'IN' },
+    { label: 'Salida', value: 'OUT' },
     { label: 'Transferencia', value: 'TRANSFER' }
   ];
 
@@ -64,8 +64,8 @@ export class CreateInventoryMovement implements OnInit {
     this.form = this.fb.group({
       product_id: [''],
       warehouse_id: [''],
-      lot_id: [''],
-      movementType: ['IN', Validators.required],
+      lot_id: [null],
+      movementType: ['', Validators.required],
       quantity: ['', Validators.required],
       reference: [''],
       status: ['ACTIVE', Validators.required]

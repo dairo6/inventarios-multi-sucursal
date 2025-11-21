@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { User } from '../../models/authorization/user';
 import { RefreshToken } from '../../models/authorization/refresh_token';
+import { RoleUser } from '../../models/authorization/role_user';
+import { Role } from '../../models/authorization/role';
 
 export class AuthController {
   public async register(req: Request, res: Response): Promise<void> {
@@ -23,7 +25,13 @@ export class AuthController {
           where: { 
             email,
             is_active: "ACTIVE"
-          } 
+          },
+          include: [
+    {
+      model: RoleUser,
+      include: [Role]
+    }
+  ] 
       });
       if (!user || !(await user.checkPassword(password))) {
         res.status(401).json({ error: 'Credenciales inválidas' });

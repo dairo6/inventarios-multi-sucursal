@@ -16,8 +16,8 @@ POST {{baseUrl}}/api/resources
 Content-Type: application/json
 
 {
-  "path": "/api/sucursales/:id",
-  "method": "PATCH",
+  "path": "/api/productos",
+  "method": "GET",
   "is_active": "ACTIVE"
 }
 

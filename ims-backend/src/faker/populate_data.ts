@@ -78,7 +78,7 @@ async function createFakeData() {
             code: faker.string.alphanumeric(8).toUpperCase(),
             description: faker.commerce.productDescription(),
             price: parseFloat(faker.commerce.price({ min: 10, max: 1000, dec: 2 })),
-            stock: faker.number.int({ min: 0, max: 100 }),
+            quantity: faker.number.int({ min: 0, max: 100 }),
             unit: faker.helpers.arrayElement(["pcs", "kg", "ltr", "box"]),
             category_id: randomCategory.id,
             supplier_id: randomSupplier.id,

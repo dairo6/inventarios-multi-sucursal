@@ -46,8 +46,8 @@ export class UpdateInventoryMovement implements OnInit {
   ];
 
   MovementOptions = [
-    { label: 'Salida', value: 'IN' },
-    { label: 'Entrada', value: 'OUT' },
+    { label: 'Entrada', value: 'IN' },
+    { label: 'Salida', value: 'OUT' },
     { label: 'Transferencia', value: 'TRANSFER' }
   ];
 

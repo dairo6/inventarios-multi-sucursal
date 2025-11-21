@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [Menubar, Button,CommonModule, TieredMenu, OverlayBadge],
+  imports: [Menubar, Button,CommonModule, TieredMenu],
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
@@ -51,20 +51,27 @@ export class Header implements OnInit, OnDestroy {
   // 🔄 genera dinámicamente las opciones según si está logueado o no
   private updateMenus() {
     this.isLoggedIn = this.authService.isLoggedIn();
+    const role = this.authService.getUserRole();
 
     // 🔵 Menú principal del Menubar
     this.items = [
       {
-        label: 'Dashboard',
-        icon: 'pi pi-home',
-        command: () => this.router.navigate(['/dashboard'])
-      },
-      {
-        label: 'Información',
-        icon: 'pi pi-info-circle',
-        command: () => console.log("Información")
+        label: 'Home',
+        icon: 'pi pi-home !text-orange-400 !text-lg',
+        command: () => this.router.navigate(['/home'])
       }
+
     ];
+
+    // ⛔ Solo los administradores ven "Asignar Roles"
+  if (this.isLoggedIn && role === 'Admin') {
+  this.items.push({
+    label: 'Asignar Roles',
+    icon: 'pi pi-lock !text-orange-400 !text-lg',
+    command: () => this.router.navigate(['/users'])
+  });
+}
+
 
     // 🔴 Menú del usuario (avatar)
     if (this.isLoggedIn) {

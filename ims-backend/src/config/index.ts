@@ -69,7 +69,7 @@ export class App {
       }
 
       // Sincronizar la base de datos
-      await sequelize.sync({ force: false });
+      await sequelize.sync({ force: false});
       console.log(`📦 Base de datos sincronizada exitosamente`);
 
     } catch (error) {

@@ -1,0 +1,99 @@
+<div class="max-w-6xl mx-auto py-2 space-y-3">
+
+    <!-- ⛰️ CARD SUPERIOR — Más Delgada -->
+    <div class="rounded-2xl shadow bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 md:p-5">
+        <div class="flex flex-col md:flex-row md:items-center gap-6">
+
+            <!-- INFORMACIÓN PRINCIPAL -->
+            <div class="flex-1">
+                <h1 class="text-2xl md:text-3xl font-bold drop-shadow-sm">
+                    Inventario Multisucursal
+                </h1>
+
+                <p class="text-blue-100 mt-1 text-xs md:text-sm leading-tight">
+                    Gestiona existencias, movimientos y control por sucursal.
+                </p>
+
+                <!-- MINI STATS compactos -->
+                <div class="flex gap-4 mt-3 text-xs">
+                    <div class="flex items-center gap-1">
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-300"></div>
+                        Sucursales
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-300"></div>
+                        Lotes
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-2.5 h-2.5 rounded-full bg-blue-300"></div>
+                        Movimientos
+                    </div>
+                </div>
+            </div>
+
+            <!-- OBJETIVO (compacto) -->
+            <div class="max-w-xs bg-white/10 p-3 rounded-lg backdrop-blur">
+                <h2 class="font-semibold text-white text-sm">Objetivo</h2>
+                <p class="text-blue-100 text-xs mt-1 leading-tight">
+                    Centralizar y visualizar movimientos de inventario entre sucursales.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 📦 CARD — Movimientos recientes -->
+    <div class="bg-white rounded-2xl shadow p-6 md:p-6">
+
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-semibold text-slate-700">Movimientos recientes</h3>
+
+            <!-- Botón Nuevo Movimiento -->
+            <button pButton type="button" label="Nuevo Movimiento" icon="pi pi-plus"
+                class="p-button-sm p-button-success" (click)="goToNewMovement()">
+            </button>
+        </div>
+
+        <!-- LOADING -->
+        <div *ngIf="loading" class="text-slate-500">Cargando movimientos...</div>
+
+        <!-- LISTADO CON SCROLL -->
+        <div *ngIf="!loading" class="space-y-4 max-h-64 overflow-y-auto pr-2">
+
+            <div *ngFor="let mv of recentMovements"
+                class="p-4 rounded-xl border bg-lime-50 hover:bg-lime-100 transition">
+
+                <div class="flex items-start justify-between">
+
+                    <!-- DETALLES -->
+                    <div>
+                        <div class="text-slate-800 font-semibold">
+                            {{ mv.movementType }} — {{ mv.product?.name || ('#' + mv.product_id) }}
+                        </div>
+
+                        <div class="text-xs text-slate-500 mt-1">
+                            Sucursal: {{ mv.warehouse?.name || mv.warehouse_id }}
+                            • Lote: {{ mv.lot?.code || '-' }}
+                        </div>
+
+                        <div class="text-sm text-slate-700 mt-1">
+                            Cantidad: <strong>{{ mv.quantity }}</strong> — Ref: {{ mv.reference || '—' }}
+                        </div>
+                    </div>
+
+                    <!-- FECHA -->
+                    <div class="text-right text-xs text-slate-500">
+                        {{ mv.createdAt | date:'short' }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIN MOVIMIENTOS -->
+            <p *ngIf="recentMovements.length === 0" class="text-slate-500 text-center py-2">
+                No hay movimientos recientes.
+            </p>
+        </div>
+
+    </div>
+</div>

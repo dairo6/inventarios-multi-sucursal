@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StockGrid } from './stock-grid';
+import { ListUser } from './list-user';
 
-describe('StockGrid', () => {
-  let component: StockGrid;
-  let fixture: ComponentFixture<StockGrid>;
+describe('ListUser', () => {
+  let component: ListUser;
+  let fixture: ComponentFixture<ListUser>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StockGrid]
+      imports: [ListUser]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StockGrid);
+    fixture = TestBed.createComponent(ListUser);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

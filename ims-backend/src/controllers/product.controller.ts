@@ -42,7 +42,7 @@ export class ProductController {
 
   // Create a new product
   public async createProduct(req: Request, res: Response) {
-    const { name, code, description, price, stock, unit, category_id, supplier_id, status } = req.body;
+    const { name, code, description, price, quantity, unit, category_id, supplier_id, status } = req.body;
 
     try {
       let body: ProductI = {
@@ -50,7 +50,7 @@ export class ProductController {
         code,
         description,
         price,
-        stock,
+        quantity,
         unit,
         category_id,
         supplier_id,
@@ -67,7 +67,7 @@ export class ProductController {
   // Update a product
   public async updateProduct(req: Request, res: Response) {
     const { id: pk } = req.params;
-    const { name, code, description, price, stock, unit, category_id, supplier_id, status } = req.body;
+    const { name, code, description, price, quantity, unit, category_id, supplier_id, status } = req.body;
 
     try {
       let body: ProductI = {
@@ -75,7 +75,7 @@ export class ProductController {
         code,
         description,
         price,
-        stock,
+        quantity,
         unit,
         category_id,
         supplier_id,

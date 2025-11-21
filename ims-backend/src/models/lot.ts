@@ -7,7 +7,7 @@ export interface LotI {
   product_id: number;   // FK al producto
   code: string;
   expirationDate?: Date;
-  quantity: number;
+  quantity?: number;
   status: "AVAILABLE" | "EXPIRED" | "BLOCKED";
   readonly createdAt: Date;
 }

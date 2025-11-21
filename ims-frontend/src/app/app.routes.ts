@@ -1,9 +1,14 @@
 import { Routes } from '@angular/router';
 
+import { Home } from './components/ui/home/home';
+
 import { Login } from './components/auth/login/login';
 import { Register } from './components/auth/register/register';
 
 import { AuthGuard } from './guards/authguard';
+
+import { RoleGuard } from './guards/role-guard';
+import { ListUser } from './components/auth/list-user/list-user';
 
 //Component Product
 import { ListProduct } from './components/product/list-product/list-product';
@@ -71,11 +76,18 @@ import { DeleteGuarantee } from './components/guarantee/delete-guarantee/delete-
 
 export const routes: Routes = [
 
-    { 
-        path: '', 
-        redirectTo: '/login', 
-        pathMatch: 'full' 
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
     },
+    {
+        path: 'users',
+        component: ListUser,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['Admin'] }   // 👈 IMPORTANTE
+    },
+
     {
         path: "login",
         component: Login
@@ -84,24 +96,28 @@ export const routes: Routes = [
         path: "register",
         component: Register
     },
+
+    // Home
+    { path: 'home', component: Home, canActivate: [AuthGuard] },
+
     // Products
     { path: 'products', component: ListProduct, canActivate: [AuthGuard] },
-    { path: 'products/create', component: CreateProduct, canActivate: [AuthGuard]},
-    { path: 'products/update/:id', component: UpdateProduct, canActivate: [AuthGuard]},
-    { path: 'products/delete/:id', component: DeleteProduct, canActivate: [AuthGuard]},
+    { path: 'products/create', component: CreateProduct, canActivate: [AuthGuard] },
+    { path: 'products/update/:id', component: UpdateProduct, canActivate: [AuthGuard] },
+    { path: 'products/delete/:id', component: DeleteProduct, canActivate: [AuthGuard] },
 
 
     // Categories
-    { path: 'categories', component: ListCategory, canActivate: [AuthGuard]},
-    { path: 'categories/create', component: CreateCategory, canActivate: [AuthGuard]},
-    { path: 'categories/update/:id', component: UpdateCategory, canActivate: [AuthGuard]},
-    { path: 'categories/delete/:id', component: DeleteCategory, canActivate: [AuthGuard]},
+    { path: 'categories', component: ListCategory, canActivate: [AuthGuard] },
+    { path: 'categories/create', component: CreateCategory, canActivate: [AuthGuard] },
+    { path: 'categories/update/:id', component: UpdateCategory, canActivate: [AuthGuard] },
+    { path: 'categories/delete/:id', component: DeleteCategory, canActivate: [AuthGuard] },
 
     // Suppliers
-    { path: 'suppliers', component: ListSupplier, canActivate: [AuthGuard]},
-    { path: 'suppliers/create', component: CreateSupplier, canActivate: [AuthGuard]},
-    { path: 'suppliers/update/:id', component: UpdateSupplier, canActivate: [AuthGuard]},
-    { path: 'suppliers/delete/:id', component: DeleteSupplier, canActivate: [AuthGuard]},
+    { path: 'suppliers', component: ListSupplier, canActivate: [AuthGuard] },
+    { path: 'suppliers/create', component: CreateSupplier, canActivate: [AuthGuard] },
+    { path: 'suppliers/update/:id', component: UpdateSupplier, canActivate: [AuthGuard] },
+    { path: 'suppliers/delete/:id', component: DeleteSupplier, canActivate: [AuthGuard] },
 
     // Branches
     { path: 'branches', component: ListBranch, canActivate: [AuthGuard] },
@@ -151,5 +167,5 @@ export const routes: Routes = [
     }
 
     // UI
-    
+
 ];

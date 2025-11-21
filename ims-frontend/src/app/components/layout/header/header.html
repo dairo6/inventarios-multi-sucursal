@@ -15,17 +15,6 @@
     <ng-template #end>
       <div class="flex items-center gap-3">
 
-        <!-- 🔔 Notificaciones (solo si está logueado) -->
-        <button 
-          *ngIf="isLoggedIn"
-          type="button" 
-          class="text-orange-500 bg-gray-100 hover:bg-gray-200 rounded shadow hover:shadow-lg flex items-center justify-center w-10 h-10">
-          
-          <p-overlaybadge value="2">
-            <i class="pi pi-bell text-2xl"></i>
-          </p-overlaybadge>
-        </button>
-
         <!-- 👤 Botón de menú del usuario -->
         <button 
           type="button"

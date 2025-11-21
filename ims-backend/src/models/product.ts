@@ -9,7 +9,7 @@ export interface ProductI {
   code: string;
   description?: string;
   price: number;
-  stock: number;
+  quantity: number;
   unit: string;
   category_id: number;
   supplier_id?: number;
@@ -22,7 +22,7 @@ export class Product extends Model {
   public code!: string;
   public description?: string;
   public price!: number;
-  public stock!: number;
+  public quantity!: number;
   public unit!: string;
   public category_id!: number;
   public supplier_id?: number;
@@ -63,15 +63,11 @@ Product.init(
         isDecimal: { msg: "El precio debe ser un número válido" },
       },
     },
-    stock: {
+    quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         isInt: { msg: "El stock debe ser un número entero" },
-        min: {
-          args: [0],
-          msg: "El stock no puede ser negativo",
-        },
       },
     },
     unit: {

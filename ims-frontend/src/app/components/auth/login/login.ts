@@ -46,7 +46,7 @@ export class Login {
             detail: 'Sesión iniciada correctamente'
           });
           setTimeout(() => {
-            this.router.navigate(['/products']);
+            this.router.navigate(['/home']);
           }, 1000);
         },
         error: (error) => {

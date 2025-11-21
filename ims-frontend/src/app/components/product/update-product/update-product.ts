@@ -45,7 +45,7 @@ export class UpdateProduct implements OnInit {
         code: ['', [Validators.required, Validators.minLength(2)]],
         description: ['', [Validators.required, Validators.minLength(2)]],
         price: [''],
-        stock: [''],
+        quantity: [''],
         unit: [''],
         category_id: [''],
         supplier_id: [''],

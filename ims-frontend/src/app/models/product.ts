@@ -5,7 +5,7 @@ export interface ProductI {
   description?: string;
   price: number;
   unit: string;
-  stock: number;
+  quantity: number;
   category_id?: number;
   supplier_id?: number;
 

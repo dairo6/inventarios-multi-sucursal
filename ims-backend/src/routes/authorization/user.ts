@@ -11,8 +11,9 @@ export class UserRoutes {
         app.route("/api/users").get(this.userController.getAllUsers); // Get all users
         app.route("/api/users").post(this.userController.getAllUsers);
 
-
-        
+        // ================== RUTAS CON AUTENTICACIÓN ==================
+        app.route("/api/users/:userId/roles")
+            .put(authMiddleware, this.userController.assignRoleToUser); // Asignar rol a usuario
 
     }
 }        
