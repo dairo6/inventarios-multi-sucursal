@@ -299,28 +299,74 @@ Framework Used: Angular 20 (Standalone components)
 
 Folder Structure (selected):
 
-```
-ims-frontend/src/app/
-├─ components/
-│  ├─ auth/
-│  │  ├─ list-user/          # list user component (dialog for assign role)
-│  │  ├─ login/
-│  │  └─ register/
-│  ├─ product/
-│  ├─ branch/
-│  └─ ...
-├─ services/
-│  └─ auth.ts                # HTTP calls for auth, users, roles
-├─ interceptors/
-│  └─ auth.interceptor.ts    # adds Bearer header to requests
-├─ app.config.ts             # app providers and interceptor registration
-└─ styles.css
-```
+![Folder Structure Frontend](./Anexos/Folder-Estructure-Frontend.png)
 
-Models, services and Components
-- `auth.ts` service contains `login`, `register`, `getAllUsers`, `getAllRoles`, `assignRoleToUser`.
-- `list-user` component shows users in a table and opens `p-dialog` to assign roles using `p-select`.
-- `auth.interceptor.ts` injects the JWT stored in localStorage as `Authorization` header.
+Models, Services and Components (detailed)
+
+Frontend (Angular - `ims-frontend/src/app`)
+
+- Components (folder: `src/app/components`)
+	- `auth/`
+		- `list-user/` (users list + assign-role dialog)
+		- `login/`
+		- `register/`
+	- `product/` (product list, create/edit forms)
+	- `category/`
+	- `supplier/`
+	- `branch/`
+	- `warehouse/`
+	- `location/`
+	- `lot/`
+	- `inventory-movement/`
+	- `stock-branch/`
+	- `guarantee/`
+	- `layout/` (app layout, aside, header, footer)
+	- `ui/` (shared UI pieces, home)
+
+- Services (folder: `src/app/services`)
+	- `auth.ts` — auth endpoints and user/role helpers: `login`, `register`, `getAllUsers`, `getAllRoles`, `assignRoleToUser`, etc.
+	- `product.ts` — product CRUD calls
+	- `category.ts` — category CRUD calls
+	- `supplier.ts` — supplier CRUD calls
+	- `branch.ts` — branch CRUD calls
+	- `warehouse.ts` — warehouse CRUD calls
+	- `location.ts` — location CRUD calls
+	- `lot.ts` — lot CRUD calls
+	- `inventory-movement.ts` — inventory movement endpoints
+	- `stock-branch.ts` — stock per branch endpoints
+	- `guarantee.ts` — guarantee endpoints
+	- (each service has a corresponding `*.spec.ts` test file scaffold)
+
+- Interceptors (folder: `src/app/interceptors`)
+	- `auth.interceptor.ts` — attaches `Authorization: Bearer <token>` header to outgoing HTTP requests (reads token from `localStorage`).
+
+Backend (Node + Sequelize - `ims-backend/src/models`)
+
+- Domain models (files under `ims-backend/src/models`):
+	- `product.ts`
+	- `category.ts`
+	- `supplier.ts`
+	- `branch.ts`
+	- `warehouse.ts`
+	- `location.ts`
+	- `lot.ts`
+	- `inventorymovement.ts`
+	- `stockbranch.ts`
+	- `guarantee.ts`
+
+- Authorization models (folder: `ims-backend/src/models/authorization`):
+	- `user.ts`
+	- `role.ts`
+	- `role_user.ts`
+	- `resource.ts`
+	- `resource_role.ts`
+	- `refresh_token.ts`
+
+Notes:
+- The frontend components map closely to backend controllers and routes (e.g., `product` component ↔ `product.controller.ts` + `product` routes).
+- Services encapsulate the HTTP API calls; `auth.ts` is the main service that also interacts with role/user endpoints.
+- If you want, I can expand each bullet with file paths and primary methods (e.g., list of exported functions) or add a cross-reference table mapping component → service → backend route.
+
 
 ### 6.2 Visual explanation of the system’s operation (frontend)
 
@@ -329,6 +375,12 @@ Models, services and Components
 3. Successful login stores user and token in `localStorage`.
 4. User navigates to CRUD screens where Angular services call backend endpoints.
 5. UI updates based on responses and shows modals (PrimeNG) for create/update operations.
+
+![alt text](<./Anexos/Captura de pantalla 2025-11-19 014025.png>)
+
+![alt text](./Anexos/Local-storade.png)
+
+![alt text](<./Anexos/Captura de pantalla 2025-11-19 234247.png>)
 
 ---
 
@@ -384,36 +436,62 @@ npm start      # runs ng serve
 
 ### 9.2 Environment variables (example `.env`)
 
-```
+```dotenv
+# Actual `.env` utilizado en el backend (ruta: `ims-backend/.env`)
 PORT=3000
-DB_ENGINE=mysql
+
+# Variable para seleccionar el motor de base de datos   postgres  mysql
+DB_ENGINE=postgres
+
+# Configuración para MySQL
 MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=
-MYSQL_NAME=ims_db
+MYSQL_USER=dairo
+MYSQL_PASSWORD=Dairo@123
+MYSQL_NAME=inventarios_multi_sucursal
 MYSQL_PORT=3306
-JWT_SECRET=your_jwt_secret_here
-NODE_ENV=development
+
+# Configuración para PostgreSQL
+POSTGRES_HOST=localhost
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=root
+POSTGRES_NAME=inventarios_multi_sucursal
+POSTGRES_PORT=5432
+
+# Configuración para SQL Server
+MSSQL_HOST=localhost
+MSSQL_USER=sa
+MSSQL_PASSWORD=Dairo@123    
+MSSQL_NAME=inventarios_multi_sucursal
+MSSQL_PORT=1433
+
+# Configuración para Oracle
+ORACLE_HOST=localhost
+ORACLE_USER=inventarios_multi_sucursal
+ORACLE_PASSWORD=Dairo@123
+ORACLE_NAME=xe
+ORACLE_PORT=1521
+
+# JWT Secret
+JWT_SECRET=DarciaSuperSecretKey123
 ```
 
-### 9.3 Postman quick test (sequence)
-1. POST `/api/register` with `{ username, email, password }` (optional to create a test user)
-2. POST `/api/login` -> receive `token`
-3. Add `Authorization: Bearer <token>` header
-4. PUT `/api/users/:id/roles` with `{ roleId }` to assign role
-5. GET `/api/users` to verify assignment
+### 9.3 Quick test (REST Client / Postman)
 
-### 9.4 Places to add screenshots (User Manual)
-Add the required UI screenshots and CRUD captures in a separate `Manual_User.md` or in the annexes. In this file, leave placeholders where you will paste screenshots.
+We primarily use the **VSCode REST Client** with the `.http` files included under `ims-backend/src/http/` for quick API checks, but the same sequence works in Postman or Insomnia.
+
+Quick steps using REST Client (`.http` files):
+1. Open `ims-backend/src/http/authorization/auth.http` and run the `POST /api/login` request to obtain a token.
+2. Copy the returned token (`token` or `accessToken` in the JSON response).
+3. Open the appropriate `.http` (for example `ims-backend/src/http/authorization/user.http`) and add the header line before protected requests:
 
 ```
-[SCREENSHOT_PLACEHOLDER] - e.g. /assets/manual_screens/login.png
+Authorization: Bearer <paste-your-token-here>
 ```
 
----
+4. Run `PUT /api/users/:id/roles` with body `{ "roleId": X }` to assign/update a role for a user.
+5. Run `GET /api/users` to verify the assignment.
 
-If you want, I can now:
-- generate a `Manual_User.md` in Spanish with placeholders and the exact locations to paste screenshots for each CRUD (I can scaffold the structure and leave the image links), or
-- add more detailed API examples (full JSON payloads and sample responses) for each route (products, branches, warehouses, users, roles).
+Notes for Postman/Insomnia: follow the same sequence — run login, copy the token and add an `Authorization: Bearer <token>` header for subsequent requests.
 
-Tell me which of these you prefer and provide the missing meta info (student name, course, date) and I'll finish the manual and add the user manual scaffold with screenshot placeholders.
+Tip: create a REST Client environment (e.g. `.vscode/rest-client.env.json`) with `baseUrl` so requests use `{{baseUrl}}` and you don't need to edit each file when changing the host.
+
