@@ -2,12 +2,12 @@
 
 ## 1. Project Information
 
-Project Name: Inventario Multi Sucursal (IMS)
-Student Name: [Dairo Alfonso Arcia Macea]
-Course: [Desarrollo Web]
-Semester: [8vo]
-Date: [21/11/2025]
-Instructor: [Jaider Quintero]
+- Project Name: Inventario Multi Sucursal (IMS)
+- Student Name: [Dairo Alfonso Arcia Macea]
+- Course: [Desarrollo Web]
+- Semester: [8vo]
+- Date: [21/11/2025]
+- Instructor: [Jaider Quintero]
 
 Short Project Description:
 This project is a multi-branch inventory management system. The application allows administrators to manage products, categories, warehouses, branches, stock movements, lots and user roles. The backend is implemented with Node.js, Express and Sequelize (supporting several DB engines). The frontend is a modern single-page app built with Angular 20, PrimeNG and Tailwind CSS.
